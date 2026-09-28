@@ -1,1487 +1,750 @@
-/* =========================================================
-   VIBECRAFT SMART ROOM SYSTEM
-========================================================= */
+/*
+    VibeCraft Attendance + Smart Room Finder
+    ----------------------------------------
+    Room names below are based on the uploaded
+    SRM timetable dataset.
+
+    Important:
+    AC/capacity information is NOT invented.
+*/
 
 
-/* =========================================================
-   ROOM DATA
-========================================================= */
-
-const rooms = [
+const timetableRooms = [
 
     {
-        id: "G101",
-        floor: "Ground",
-        capacity: 60,
-        features: ["AC", "Projector", "Smart Board"],
-        classes: [
-            ["09:00", "10:00"],
-            ["11:00", "12:00"],
-            ["14:00", "15:00"]
-        ]
+        name: "IST 602",
+        building: "IST",
+        type: "Classroom",
+        source: "I ECE-A / ECE timetable"
     },
 
     {
-        id: "G102",
-        floor: "Ground",
-        capacity: 40,
-        features: ["AC", "Projector"],
-        classes: [
-            ["10:00", "11:00"],
-            ["13:00", "14:00"],
-            ["16:00", "17:00"]
-        ]
+        name: "IST 710",
+        building: "IST",
+        type: "Classroom",
+        source: "ECE timetable"
     },
 
     {
-        id: "G103",
-        floor: "Ground",
-        capacity: 80,
-        features: ["AC", "Projector", "Smart Board"],
-        classes: [
-            ["09:00", "11:00"],
-            ["12:00", "13:00"],
-            ["15:00", "16:00"]
-        ]
+        name: "IST 510",
+        building: "IST",
+        type: "Classroom",
+        source: "ECE timetable"
     },
 
     {
-        id: "G104",
-        floor: "Ground",
-        capacity: 30,
-        features: ["Projector"],
-        classes: [
-            ["08:00", "09:00"],
-            ["11:00", "12:30"],
-            ["14:00", "15:00"]
-        ]
+        name: "IST 502",
+        building: "IST",
+        type: "Classroom",
+        source: "ECE-DS timetable"
     },
 
     {
-        id: "G105",
-        floor: "Ground",
-        capacity: 100,
-        features: ["AC", "Projector", "Smart Board"],
-        classes: [
-            ["09:00", "10:00"],
-            ["10:00", "12:00"],
-            ["14:00", "16:00"]
-        ]
-    },
-
-
-    {
-        id: "F201",
-        floor: "First",
-        capacity: 50,
-        features: ["AC", "Projector"],
-        classes: [
-            ["09:00", "10:00"],
-            ["11:00", "13:00"],
-            ["15:00", "16:00"]
-        ]
+        name: "IST 609",
+        building: "IST",
+        type: "Classroom",
+        source: "I Year timetable"
     },
 
     {
-        id: "F202",
-        floor: "First",
-        capacity: 70,
-        features: ["AC", "Smart Board"],
-        classes: [
-            ["10:00", "11:00"],
-            ["13:00", "14:00"],
-            ["16:00", "17:00"]
-        ]
+        name: "IST 520",
+        building: "IST",
+        type: "Classroom",
+        source: "I Year timetable"
     },
 
     {
-        id: "F203",
-        floor: "First",
-        capacity: 40,
-        features: ["Projector", "Smart Board"],
-        classes: [
-            ["08:00", "09:00"],
-            ["12:00", "13:00"],
-            ["15:00", "16:00"]
-        ]
+        name: "IST 702",
+        building: "IST",
+        type: "Classroom",
+        source: "I Year timetable"
     },
 
     {
-        id: "F204",
-        floor: "First",
-        capacity: 90,
-        features: ["AC", "Projector"],
-        classes: [
-            ["09:00", "11:00"],
-            ["13:00", "15:00"]
-        ]
+        name: "IST 626",
+        building: "IST",
+        type: "Classroom",
+        source: "ECE timetable"
     },
 
     {
-        id: "F205",
-        floor: "First",
-        capacity: 35,
-        features: ["AC"],
-        classes: [
-            ["10:00", "12:00"],
-            ["14:00", "15:00"],
-            ["16:00", "17:00"]
-        ]
-    },
-
-
-    {
-        id: "S301",
-        floor: "Second",
-        capacity: 60,
-        features: ["AC", "Projector"],
-        classes: [
-            ["09:00", "10:00"],
-            ["12:00", "13:00"],
-            ["15:00", "17:00"]
-        ]
+        name: "IST 617",
+        building: "IST",
+        type: "Classroom",
+        source: "ECE timetable"
     },
 
     {
-        id: "S302",
-        floor: "Second",
-        capacity: 45,
-        features: ["Projector"],
-        classes: [
-            ["10:00", "11:00"],
-            ["13:00", "14:00"]
-        ]
+        name: "IST 520",
+        building: "IST",
+        type: "Classroom",
+        source: "I Year timetable"
     },
 
     {
-        id: "S303",
-        floor: "Second",
-        capacity: 80,
-        features: ["AC", "Projector", "Smart Board"],
-        classes: [
-            ["09:00", "12:00"],
-            ["14:00", "15:00"]
-        ]
+        name: "IST 710",
+        building: "IST",
+        type: "Classroom",
+        source: "ECE timetable"
     },
 
     {
-        id: "S304",
-        floor: "Second",
-        capacity: 30,
-        features: ["Smart Board"],
-        classes: [
-            ["08:00", "10:00"],
-            ["12:00", "13:00"],
-            ["16:00", "17:00"]
-        ]
+        name: "IST 108",
+        building: "IST",
+        type: "Classroom",
+        source: "Timetable dataset"
     },
 
     {
-        id: "S305",
-        floor: "Second",
-        capacity: 100,
-        features: ["AC", "Projector", "Smart Board"],
-        classes: [
-            ["10:00", "12:00"],
-            ["14:00", "16:00"]
-        ]
+        name: "IST 211",
+        building: "IST",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "IST 225",
+        building: "IST",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "IST 227",
+        building: "IST",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "IST 411",
+        building: "IST",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "IST 416",
+        building: "IST",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "IST 518",
+        building: "IST",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "IST 519",
+        building: "IST",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "G-625",
+        building: "General",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "G-602",
+        building: "General",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "G-401",
+        building: "General",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "H-TB-106",
+        building: "H Block",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "CDC-TB-106",
+        building: "CDC",
+        type: "Classroom",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "LAB-309/107",
+        building: "Laboratory",
+        type: "Lab",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "LAB-108/309",
+        building: "Laboratory",
+        type: "Lab",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "LAB-108/107",
+        building: "Laboratory",
+        type: "Lab",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "MPMC LAB-107",
+        building: "Laboratory",
+        type: "Lab",
+        source: "Timetable dataset"
+    },
+
+    {
+        name: "BIO DSP LAB-108",
+        building: "Laboratory",
+        type: "Lab",
+        source: "Timetable dataset"
     }
 
 ];
 
 
 
-/* =========================================================
-   PAGE NAVIGATION
-========================================================= */
+/*
+    Remove duplicate rooms
+*/
 
-function showSection(sectionId) {
-
-    document.querySelectorAll(".section")
-        .forEach(section => {
-
-            section.classList.remove("active");
-
-        });
-
-    const section =
-        document.getElementById(sectionId);
-
-    if (section) {
-
-        section.classList.add("active");
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }
-
-    if (sectionId === "rooms") {
-
-        renderRooms();
-
-        updateDashboardStats();
-
-    }
-
-}
+const rooms = Array.from(
+    new Map(
+        timetableRooms.map(room => [room.name, room])
+    ).values()
+);
 
 
 
-/* =========================================================
-   TIME HELPERS
-========================================================= */
+/*
+    Generate a repeatable demo availability state.
 
-function timeToMinutes(time) {
+    This gives the interface a live-looking status
+    without pretending that we have a live college
+    timetable API.
+*/
 
-    const [hours, minutes] =
-        time.split(":").map(Number);
+function getRoomStatus(room, index) {
 
-    return hours * 60 + minutes;
-}
+    const hour = new Date().getHours();
 
+    const value =
+        (hour + index * 3) % 5;
 
-function getCurrentMinutes() {
+    if (value === 0 || value === 1) {
 
-    const now = new Date();
-
-    return (
-        now.getHours() * 60 +
-        now.getMinutes()
-    );
-}
-
-
-function getCurrentSeconds() {
-
-    const now = new Date();
-
-    return (
-        now.getHours() * 3600 +
-        now.getMinutes() * 60 +
-        now.getSeconds()
-    );
-
-}
-
-
-
-/* =========================================================
-   ROOM AVAILABILITY
-========================================================= */
-
-function getRoomStatus(room) {
-
-    const current =
-        getCurrentMinutes();
-
-    for (const classTime of room.classes) {
-
-        const start =
-            timeToMinutes(classTime[0]);
-
-        const end =
-            timeToMinutes(classTime[1]);
-
-        if (
-            current >= start &&
-            current < end
-        ) {
-
-            return {
-
-                available: false,
-
-                currentClass: classTime[0]
-                    + " - "
-                    + classTime[1],
-
-                nextStart: null,
-
-                minutesRemaining:
-                    end - current
-
-            };
-
-        }
+        return {
+            available: true,
+            text: "Available"
+        };
 
     }
-
-
-    let nextClass = null;
-
-    for (const classTime of room.classes) {
-
-        const start =
-            timeToMinutes(classTime[0]);
-
-        if (start > current) {
-
-            nextClass = classTime;
-
-            break;
-
-        }
-
-    }
-
 
     return {
-
-        available: true,
-
-        currentClass: null,
-
-        nextStart:
-            nextClass
-                ? nextClass[0]
-                : null,
-
-        minutesRemaining:
-            nextClass
-                ? timeToMinutes(nextClass[0])
-                    - current
-                : null
-
+        available: false,
+        text: "Occupied"
     };
 
 }
 
 
 
-/* =========================================================
-   ROOM RENDERING
-========================================================= */
+/* NAVIGATION */
 
-function renderRooms() {
+function showSection(section) {
 
-    const floor =
-        document.getElementById("floorFilter").value;
+    document
+        .querySelectorAll(".section")
+        .forEach(s => s.classList.remove("active"));
 
-    const capacity =
-        document.getElementById("capacityFilter").value;
+    const target =
+        document.getElementById(section);
 
-    const feature =
-        document.getElementById("featureFilter").value;
+    if (target) {
+        target.classList.add("active");
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+
+/* ATTENDANCE */
+
+function calculateAttendance() {
+
+    const total =
+        Number(document.getElementById("totalClasses").value);
+
+    const attended =
+        Number(document.getElementById("attendedClasses").value);
+
+    if (!total || total <= 0) {
+
+        showToast("Enter valid class details.");
+
+        return;
+    }
+
+    if (attended > total) {
+
+        showToast("Attended classes cannot exceed total classes.");
+
+        return;
+    }
+
+    const percentage =
+        ((attended / total) * 100).toFixed(1);
+
+    document.getElementById("attendanceValue").textContent =
+        percentage + "%";
+
+    document.getElementById("attendanceResult").textContent =
+        `Current Attendance: ${percentage}%`;
+
+}
+
+
+
+/* ROOM SEARCH */
+
+function searchRooms() {
+
+    const query =
+        (
+            document.getElementById("roomSearch")?.value ||
+            document.getElementById("quickSearch")?.value ||
+            ""
+        ).toLowerCase().trim();
+
+
+    showSection("rooms");
+
+
+    if (!query) {
+
+        renderRooms(rooms);
+
+        document.getElementById("searchMessage").textContent =
+            "Showing all rooms from the uploaded timetable dataset.";
+
+        return;
+    }
+
+
+    const words =
+        query.split(/\s+/);
 
 
     const filtered =
         rooms.filter(room => {
 
-            if (
-                floor !== "all" &&
-                room.floor !== floor
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                capacity !== "all" &&
-                room.capacity <
-                Number(capacity)
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                feature !== "all" &&
-                !room.features.includes(feature)
-            ) {
-
-                return false;
-
-            }
-
-
-            return true;
-
-        });
-
-
-    const ground =
-        document.getElementById("groundRooms");
-
-    const first =
-        document.getElementById("firstRooms");
-
-    const second =
-        document.getElementById("secondRooms");
-
-
-    ground.innerHTML = "";
-    first.innerHTML = "";
-    second.innerHTML = "";
-
-
-    filtered.forEach(room => {
-
-        const card =
-            createRoomCard(room);
-
-        if (room.floor === "Ground") {
-
-            ground.appendChild(card);
-
-        }
-
-        if (room.floor === "First") {
-
-            first.appendChild(card);
-
-        }
-
-        if (room.floor === "Second") {
-
-            second.appendChild(card);
-
-        }
-
-    });
-
-}
-
-
-function createRoomCard(room) {
-
-    const status =
-        getRoomStatus(room);
-
-    const div =
-        document.createElement("div");
-
-    div.className =
-        "room "
-        + (
-            status.available
-                ? "available"
-                : "busy"
-        );
-
-    div.onclick =
-        () => openRoom(room.id);
-
-
-    div.innerHTML = `
-
-        <div class="room-name">
-            ${room.id}
-        </div>
-
-        <div class="room-floor">
-            ${room.floor} Floor
-            • ${room.capacity} seats
-        </div>
-
-        <div class="room-status">
-
-            ${status.available
-                ? "● AVAILABLE"
-                : "● OCCUPIED"}
-
-        </div>
-
-    `;
-
-    return div;
-
-}
-
-
-
-/* =========================================================
-   SMART SEARCH
-========================================================= */
-
-function handleSearchKey(event) {
-
-    if (event.key === "Enter") {
-
-        smartSearch();
-
-    }
-
-}
-
-
-function quickSearch(text) {
-
-    document.getElementById("roomSearch")
-        .value = text;
-
-    smartSearch();
-
-}
-
-
-function smartSearch() {
-
-    const input =
-        document.getElementById("roomSearch")
-            .value
-            .toLowerCase()
-            .trim();
-
-
-    if (!input) {
-
-        showToast(
-            "Type what kind of room you need."
-        );
-
-        return;
-
-    }
-
-
-    const requestedFloor =
-        detectFloor(input);
-
-    const requestedFeature =
-        detectFeature(input);
-
-    const requestedDuration =
-        detectDuration(input);
-
-
-    let matches =
-        rooms.filter(room => {
-
-            const status =
-                getRoomStatus(room);
-
-
-            if (!status.available) {
-
-                return false;
-
-            }
-
-
-            if (
-                requestedFloor &&
-                room.floor !== requestedFloor
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                requestedFeature &&
-                !room.features.includes(
-                    requestedFeature
-                )
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                requestedDuration &&
-                status.minutesRemaining !== null &&
-                status.minutesRemaining <
-                requestedDuration
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                input.includes("large") ||
-                input.includes("big")
-            ) {
-
-                if (room.capacity < 70) {
-
-                    return false;
-
-                }
-
-            }
-
-
-            if (
-                input.includes("small")
-            ) {
-
-                if (room.capacity > 50) {
-
-                    return false;
-
-                }
-
-            }
-
-
-            return true;
-
-        });
-
-
-    /*
-       If there are no matches, show available
-       rooms instead of leaving the user with
-       an empty interface.
-    */
-
-    if (matches.length === 0) {
-
-        matches =
-            rooms.filter(room =>
-                getRoomStatus(room).available
+            const fullText =
+                `${room.name} ${room.building} ${room.type} ${room.source}`
+                    .toLowerCase();
+
+            return words.some(word =>
+                fullText.includes(word)
             );
 
-        showToast(
-            "No exact match. Showing available rooms."
-        );
-
-    }
-
-
-    renderSearchResults(matches);
-
-}
-
-
-
-function detectFloor(text) {
-
-    if (
-        text.includes("ground") ||
-        text.includes("g floor")
-    ) {
-
-        return "Ground";
-
-    }
-
-    if (
-        text.includes("first") ||
-        text.includes("1st")
-    ) {
-
-        return "First";
-
-    }
-
-    if (
-        text.includes("second") ||
-        text.includes("2nd")
-    ) {
-
-        return "Second";
-
-    }
-
-    return null;
-
-}
-
-
-function detectFeature(text) {
-
-    if (
-        text.includes("ac") ||
-        text.includes("air condition")
-    ) {
-
-        return "AC";
-
-    }
-
-    if (
-        text.includes("projector")
-    ) {
-
-        return "Projector";
-
-    }
-
-    if (
-        text.includes("smart board")
-    ) {
-
-        return "Smart Board";
-
-    }
-
-    return null;
-
-}
-
-
-function detectDuration(text) {
-
-    const hourMatch =
-        text.match(
-            /(\d+(?:\.\d+)?)\s*hour/
-        );
-
-    if (hourMatch) {
-
-        return Math.ceil(
-            Number(hourMatch[1]) * 60
-        );
-
-    }
-
-
-    const minuteMatch =
-        text.match(
-            /(\d+)\s*minute/
-        );
-
-    if (minuteMatch) {
-
-        return Number(
-            minuteMatch[1]
-        );
-
-    }
-
-
-    return null;
-
-}
-
-
-
-/* =========================================================
-   SEARCH RESULTS
-========================================================= */
-
-function renderSearchResults(matches) {
-
-    const grid =
-        document.getElementById("resultGrid");
-
-    const count =
-        document.getElementById("resultCount");
-
-
-    grid.innerHTML = "";
-
-    count.textContent =
-        matches.length
-        + (
-            matches.length === 1
-                ? " room"
-                : " rooms"
-        );
-
-
-    matches.forEach(room => {
-
-        const status =
-            getRoomStatus(room);
-
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "result-card";
-
-
-        const availableFor =
-            status.nextStart
-                ? "Available until "
-                    + status.nextStart
-                : "Available now";
-
-
-        card.innerHTML = `
-
-            <h3>
-                ${room.id}
-            </h3>
-
-            <p>
-                ${room.floor} Floor •
-                ${room.capacity} seats
-            </p>
-
-            <div class="result-meta">
-
-                ${room.features.map(
-                    feature =>
-                        `<span class="tag">
-                            ${feature}
-                        </span>`
-                ).join("")}
-
-            </div>
-
-            <p>
-                ✓ ${availableFor}
-            </p>
-
-            <button
-                class="primary-btn"
-                onclick="openRoom('${room.id}')"
-            >
-                View Room
-            </button>
-
-        `;
-
-        grid.appendChild(card);
-
-    });
-
-
-    document.getElementById("searchResults")
-        .scrollIntoView({
-            behavior: "smooth",
-            block: "start"
         });
 
+
+    renderRooms(filtered);
+
+
+    document.getElementById("searchMessage").textContent =
+        filtered.length
+            ? `${filtered.length} room(s) found for "${query}".`
+            : `No room matched "${query}". Try "IST", "lab", or "available".`;
+
 }
 
 
 
-/* =========================================================
-   ROOM MODAL
-========================================================= */
+/* FILTER */
 
-let selectedRoom = null;
+function filterRooms(type) {
+
+    let result = rooms;
+
+    if (type === "available") {
+
+        result =
+            rooms.filter((room, index) =>
+                getRoomStatus(room, index).available
+            );
+
+    }
+
+    else if (type === "busy") {
+
+        result =
+            rooms.filter((room, index) =>
+                !getRoomStatus(room, index).available
+            );
+
+    }
+
+    else if (type === "ist") {
+
+        result =
+            rooms.filter(room =>
+                room.building === "IST"
+            );
+
+    }
+
+    else if (type === "lab") {
+
+        result =
+            rooms.filter(room =>
+                room.type === "Lab"
+            );
+
+    }
+
+    renderRooms(result);
+
+}
 
 
-function openRoom(roomId) {
+
+/* RENDER ROOMS */
+
+function renderRooms(list) {
+
+    const container =
+        document.getElementById("roomGrid");
+
+    if (!container) return;
+
+
+    if (list.length === 0) {
+
+        container.innerHTML = `
+            <div class="panel">
+                <h3>No rooms found</h3>
+                <p class="muted">
+                    Try searching for IST, lab or a room number.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML =
+        list.map((room) => {
+
+            const originalIndex =
+                rooms.findIndex(
+                    r => r.name === room.name
+                );
+
+            const status =
+                getRoomStatus(
+                    room,
+                    originalIndex
+                );
+
+
+            return `
+
+                <div
+                    class="room-card"
+                    onclick="openRoom('${escapeQuotes(room.name)}')"
+                >
+
+                    <div class="room-status
+                        ${status.available
+                            ? "available"
+                            : "busy"}">
+                    </div>
+
+                    <h3>${room.name}</h3>
+
+                    <p>
+                        🏢 ${room.building}
+                    </p>
+
+                    <p>
+                        ${room.type === "Lab"
+                            ? "🧪 Laboratory"
+                            : "📚 Classroom"}
+                    </p>
+
+                    <div class="room-time">
+                        ${status.available
+                            ? "🟢 Available now"
+                            : "🔴 Currently occupied"}
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+
+/* MAP */
+
+function renderMap() {
+
+    const container =
+        document.getElementById("mapRooms");
+
+    if (!container) return;
+
+
+    container.innerHTML =
+        rooms.map((room, index) => {
+
+            const status =
+                getRoomStatus(room, index);
+
+            return `
+
+                <div
+                    class="map-room
+                        ${status.available
+                            ? "available"
+                            : "busy"}"
+                    onclick="openRoom('${escapeQuotes(room.name)}')"
+                >
+
+                    <strong>
+                        ${room.name}
+                    </strong>
+
+                    <span>
+                        ${status.text}
+                    </span>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+
+/* ROOM DETAILS */
+
+function openRoom(name) {
 
     const room =
-        rooms.find(
-            item => item.id === roomId
-        );
+        rooms.find(r => r.name === name);
 
     if (!room) return;
 
-    selectedRoom = room;
 
+    const index =
+        rooms.findIndex(r => r.name === name);
 
     const status =
-        getRoomStatus(room);
+        getRoomStatus(room, index);
 
 
-    const modal =
-        document.getElementById("roomModal");
+    document.getElementById("modalBody").innerHTML = `
 
-    const content =
-        document.getElementById(
-            "modalRoomContent"
-        );
+        <h2>🏫 ${room.name}</h2>
 
+        <div class="detail">
+            <span>Building</span>
+            <strong>${room.building}</strong>
+        </div>
 
-    let countdownText =
-        status.available
-            ? "Available"
-            : "Class in progress";
+        <div class="detail">
+            <span>Type</span>
+            <strong>${room.type}</strong>
+        </div>
 
+        <div class="detail">
+            <span>Status</span>
+            <strong>
+                ${status.available
+                    ? "🟢 Available"
+                    : "🔴 Occupied"}
+            </strong>
+        </div>
 
-    if (status.available) {
+        <div class="detail">
+            <span>Dataset source</span>
+            <strong>${room.source}</strong>
+        </div>
 
-        if (status.nextStart) {
+        <div class="detail">
+            <span>Data basis</span>
+            <strong>SRM timetable PDFs</strong>
+        </div>
 
-            countdownText =
-                "Free for "
-                + formatMinutes(
-                    status.minutesRemaining
-                );
-
-        } else {
-
-            countdownText =
-                "Free for the rest of the day";
-
-        }
-
-    } else {
-
-        countdownText =
-            "Class ends in "
-            + formatMinutes(
-                status.minutesRemaining
-            );
-
-    }
-
-
-    content.innerHTML = `
-
-        <p class="eyebrow">
-            ${room.floor.toUpperCase()} FLOOR
-        </p>
-
-        <h2 class="modal-room-title">
-            ${room.id}
-        </h2>
-
-        <span class="
-            modal-status
-            ${status.available
-                ? "available"
-                : "busy"}
-        ">
-
-            ${status.available
-                ? "● AVAILABLE"
-                : "● OCCUPIED"}
-
-        </span>
-
-
-        <div
-            id="modalCountdown"
-            class="countdown"
+        <button
+            class="whatsapp"
+            onclick="callSquad('${escapeQuotes(room.name)}')"
         >
-            ${countdownText}
-        </div>
-
-
-        <div class="modal-info">
-
-            <div>
-                <strong>Capacity:</strong>
-                ${room.capacity} students
-            </div>
-
-            <div>
-                <strong>Facilities:</strong>
-                ${room.features.join(", ")}
-            </div>
-
-            <div>
-                <strong>Next class:</strong>
-                ${
-                    status.nextStart
-                    || "No more classes today"
-                }
-            </div>
-
-        </div>
-
-
-        ${
-            status.available
-            ?
-            `
-                <button
-                    class="whatsapp-btn"
-                    onclick="callTheSquad()"
-                >
-                    WhatsApp — Call the Squad
-                </button>
-            `
-            :
-            `
-                <button
-                    class="primary-btn"
-                    disabled
-                    style="width:100%;opacity:0.5"
-                >
-                    Room Currently Occupied
-                </button>
-            `
-        }
+            📱 Call the Squad on WhatsApp
+        </button>
 
     `;
 
 
-    modal.classList.add("show");
-
-    startModalTimer();
+    document
+        .getElementById("roomModal")
+        .classList.add("show");
 
 }
 
 
-function closeRoomModal() {
+
+/* CLOSE MODAL */
+
+function closeModal() {
 
     document
         .getElementById("roomModal")
         .classList.remove("show");
 
-    selectedRoom = null;
-
-}
-
-
-function closeModalOutside(event) {
-
-    if (
-        event.target.id ===
-        "roomModal"
-    ) {
-
-        closeRoomModal();
-
-    }
-
 }
 
 
 
-/* =========================================================
-   COUNTDOWN
-========================================================= */
+/* WHATSAPP */
 
-let modalTimer = null;
-
-
-function startModalTimer() {
-
-    clearInterval(modalTimer);
-
-
-    modalTimer =
-        setInterval(() => {
-
-            if (!selectedRoom) {
-
-                clearInterval(modalTimer);
-
-                return;
-
-            }
-
-
-            const status =
-                getRoomStatus(
-                    selectedRoom
-                );
-
-
-            const element =
-                document.getElementById(
-                    "modalCountdown"
-                );
-
-
-            if (!element) return;
-
-
-            if (status.available) {
-
-                if (status.nextStart) {
-
-                    element.textContent =
-                        "Free for "
-                        + formatMinutes(
-                            status.minutesRemaining
-                        );
-
-                } else {
-
-                    element.textContent =
-                        "Free for the rest of the day";
-
-                }
-
-            } else {
-
-                element.textContent =
-                    "Class ends in "
-                    + formatMinutes(
-                        status.minutesRemaining
-                    );
-
-            }
-
-        }, 1000);
-
-}
-
-
-function formatMinutes(minutes) {
-
-    if (
-        minutes === null ||
-        minutes === undefined
-    ) {
-
-        return "--";
-
-    }
-
-
-    const totalSeconds =
-        Math.max(
-            0,
-            Math.floor(minutes * 60)
-        );
-
-
-    const hours =
-        Math.floor(
-            totalSeconds / 3600
-        );
-
-    const mins =
-        Math.floor(
-            (totalSeconds % 3600)
-            / 60
-        );
-
-    const secs =
-        totalSeconds % 60;
-
-
-    return [
-
-        String(hours).padStart(2, "0"),
-
-        String(mins).padStart(2, "0"),
-
-        String(secs).padStart(2, "0")
-
-    ].join(":");
-
-}
-
-
-
-/* =========================================================
-   CALL THE SQUAD
-========================================================= */
-
-function callTheSquad() {
-
-    if (!selectedRoom) return;
-
-
-    const status =
-        getRoomStatus(selectedRoom);
-
+function callSquad(roomName) {
 
     const message =
-        `📍 Heading to ${selectedRoom.id}. ` +
-        `It's free now on the ${selectedRoom.floor} floor. ` +
-        `${
-            status.nextStart
-                ? "It's free until "
-                    + status.nextStart
-                    + "."
-                : "It's available now."
-        } ` +
-        `Come fast!`;
+        `Hey Squad! 📍 Let's meet at ${roomName}. I found this room using VibeCraft Smart Room Finder.`;
 
+    const url =
+        `https://wa.me/?text=${encodeURIComponent(message)}`;
 
-    const whatsappURL =
-        "https://wa.me/?text="
-        + encodeURIComponent(message);
-
-
-    window.open(
-        whatsappURL,
-        "_blank"
-    );
+    window.open(url, "_blank");
 
 }
 
 
 
-/* =========================================================
-   DASHBOARD STATISTICS
-========================================================= */
+/* RESET */
 
-function updateDashboardStats() {
+function resetRooms() {
 
-    const available =
-        rooms.filter(
-            room =>
-                getRoomStatus(room).available
-        ).length;
+    const roomSearch =
+        document.getElementById("roomSearch");
 
-
-    const occupied =
-        rooms.length - available;
-
-
-    document.getElementById(
-        "availableCount"
-    ).textContent = available;
-
-
-    document.getElementById(
-        "occupiedCount"
-    ).textContent = occupied;
-
-}
-
-
-
-/* =========================================================
-   ATTENDANCE
-========================================================= */
-
-let attendanceRecords =
-    JSON.parse(
-        localStorage.getItem(
-            "vibecraftAttendance"
-        )
-    ) || [];
-
-
-function markAttendance() {
-
-    const student =
-        document.getElementById(
-            "studentName"
-        ).value.trim();
-
-
-    const subject =
-        document.getElementById(
-            "subjectName"
-        ).value.trim();
-
-
-    const status =
-        document.getElementById(
-            "attendanceStatus"
-        ).value;
-
-
-    if (!student || !subject) {
-
-        showToast(
-            "Please enter student name and subject."
-        );
-
-        return;
-
+    if (roomSearch) {
+        roomSearch.value = "";
     }
 
+    renderRooms(rooms);
 
-    const record = {
-
-        student,
-
-        subject,
-
-        status,
-
-        date:
-            new Date()
-                .toLocaleDateString()
-
-    };
-
-
-    attendanceRecords.push(record);
-
-
-    localStorage.setItem(
-        "vibecraftAttendance",
-        JSON.stringify(
-            attendanceRecords
-        )
-    );
-
-
-    document.getElementById(
-        "studentName"
-    ).value = "";
-
-
-    document.getElementById(
-        "subjectName"
-    ).value = "";
-
-
-    renderAttendance();
-
-    showToast(
-        "Attendance saved successfully."
-    );
-
-}
-
-
-function renderAttendance() {
-
-    const table =
-        document.getElementById(
-            "attendanceTable"
-        );
-
-
-    table.innerHTML = "";
-
-
-    attendanceRecords
-        .slice()
-        .reverse()
-        .forEach(record => {
-
-            const row =
-                document.createElement("tr");
-
-
-            row.innerHTML = `
-
-                <td>
-                    ${escapeHTML(
-                        record.student
-                    )}
-                </td>
-
-                <td>
-                    ${escapeHTML(
-                        record.subject
-                    )}
-                </td>
-
-                <td>
-                    ${record.status}
-                </td>
-
-                <td>
-                    ${record.date}
-                </td>
-
-            `;
-
-
-            table.appendChild(row);
-
-        });
-
-
-    const present =
-        attendanceRecords.filter(
-            r => r.status === "Present"
-        ).length;
-
-
-    const absent =
-        attendanceRecords.filter(
-            r => r.status === "Absent"
-        ).length;
-
-
-    const total =
-        present + absent;
-
-
-    const percentage =
-        total
-            ? Math.round(
-                (present / total) * 100
-            )
-            : 0;
-
-
-    document.getElementById(
-        "presentCount"
-    ).textContent = present;
-
-
-    document.getElementById(
-        "absentCount"
-    ).textContent = absent;
-
-
-    document.getElementById(
-        "attendancePercentage"
-    ).textContent =
-        percentage + "%";
+    document.getElementById("searchMessage").textContent =
+        "Showing rooms from the uploaded timetable dataset.";
 
 }
 
 
 
-/* =========================================================
-   SECURITY HELPER
-========================================================= */
-
-function escapeHTML(text) {
-
-    const div =
-        document.createElement("div");
-
-    div.textContent = text;
-
-    return div.innerHTML;
-
-}
-
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimer;
-
+/* TOAST */
 
 function showToast(message) {
 
     const toast =
-        document.getElementById(
-            "toast"
-        );
+        document.getElementById("toast");
 
-
-    toast.textContent =
-        message;
-
+    toast.textContent = message;
 
     toast.classList.add("show");
 
+    setTimeout(() => {
 
-    clearTimeout(toastTimer);
+        toast.classList.remove("show");
 
-
-    toastTimer =
-        setTimeout(() => {
-
-            toast.classList.remove(
-                "show"
-            );
-
-        }, 3000);
+    }, 2500);
 
 }
 
 
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+/* SAFETY */
+
+function escapeQuotes(value) {
+
+    return value
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'");
+
+}
+
+
+
+/* INITIALIZATION */
+
+function initialize() {
+
+    document.getElementById("roomCount").textContent =
+        rooms.length;
+
+
+    const available =
+        rooms.filter((room, index) =>
+            getRoomStatus(room, index).available
+        ).length;
+
+
+    document.getElementById("availableCount").textContent =
+        available;
+
+
+    renderRooms(rooms);
+
+    renderMap();
+
+}
+
+
 
 document.addEventListener(
     "DOMContentLoaded",
-    () => {
-
-        renderRooms();
-
-        renderAttendance();
-
-        updateDashboardStats();
-
-
-        /*
-           Refresh room availability every 30 seconds.
-        */
-
-        setInterval(() => {
-
-            renderRooms();
-
-            updateDashboardStats();
-
-        }, 30000);
-
-    }
+    initialize
 );
+
+
+
+/*
+    Close modal when clicking outside
+*/
+
+document
+    .getElementById("roomModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+            closeModal();
+        }
+
+    });

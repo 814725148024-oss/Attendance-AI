@@ -4,310 +4,230 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>VibeCraft | Smart Room & Attendance</title>
+    <title>VibeCraft | Attendance & Smart Room Finder</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
-
-<header class="navbar">
-
+<header class="topbar">
     <div class="brand">
-        <span class="brand-box"></span>
-        <span>VIBECRAFT</span>
+        <div class="logo">VC</div>
+        <div>
+            <h1>VibeCraft</h1>
+            <p>Campus Intelligence System</p>
+        </div>
     </div>
 
     <nav>
         <button onclick="showSection('dashboard')">Dashboard</button>
         <button onclick="showSection('rooms')">Smart Rooms</button>
-        <button onclick="showSection('attendance')">Attendance</button>
+        <button onclick="showSection('map')">Room Map</button>
     </nav>
-
-    <button class="attendance-btn" onclick="showSection('attendance')">
-        Mark Attendance
-    </button>
-
 </header>
 
 
-<!-- ================= MAIN ================= -->
-
 <main>
 
+    <!-- DASHBOARD -->
 
-<!-- ================= DASHBOARD ================= -->
+    <section id="dashboard" class="section active">
 
-<section id="dashboard" class="section active">
-
-    <div class="hero">
-
-        <div class="hero-text">
-
-            <p class="eyebrow">SMART CAMPUS EXPERIENCE</p>
-
-            <h1>
-                Find the right room.<br>
-                <span>At the right time.</span>
-            </h1>
-
-            <p class="hero-description">
-                Search available classrooms using natural language,
-                explore the floor map, check live availability and
-                invite your friends instantly.
-            </p>
-
-            <button class="primary-btn"
-                    onclick="showSection('rooms')">
-                Find a Room →
-            </button>
-
-        </div>
-
-        <div class="hero-card">
-
-            <div class="mini-header">
-                <span>LIVE CAMPUS</span>
-                <span class="live-dot">● LIVE</span>
-            </div>
-
-            <div class="campus-stat">
-                <strong id="availableCount">0</strong>
-                <span>Rooms Available</span>
-            </div>
-
-            <div class="campus-stat">
-                <strong id="occupiedCount">0</strong>
-                <span>Rooms Occupied</span>
-            </div>
-
-            <div class="campus-stat">
-                <strong>10</strong>
-                <span>Timetables</span>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="feature-grid">
-
-        <div class="feature-card">
-            <div class="feature-icon">⌕</div>
-            <h3>AI Room Finder</h3>
-            <p>
-                Type requests like
-                "I need an AC room on ground floor for 2 hours."
-            </p>
-        </div>
-
-        <div class="feature-card">
-            <div class="feature-icon">▦</div>
-            <h3>Floor Map</h3>
-            <p>
-                View classrooms visually and identify
-                available rooms instantly.
-            </p>
-        </div>
-
-        <div class="feature-card">
-            <div class="feature-icon">◷</div>
-            <h3>Live Countdown</h3>
-            <p>
-                Know exactly how long a room remains
-                available before the next class.
-            </p>
-        </div>
-
-        <div class="feature-card">
-            <div class="feature-icon">↗</div>
-            <h3>Call the Squad</h3>
-            <p>
-                Share your selected room with friends
-                through WhatsApp.
-            </p>
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- ================= SMART ROOMS ================= -->
-
-<section id="rooms" class="section">
-
-    <div class="section-heading">
-
-        <div>
-            <p class="eyebrow">PHASE 2</p>
-
-            <h2>
-                The Smart Room Finder
-            </h2>
-
-            <p>
-                Find rooms using filters or natural-language search.
-            </p>
-        </div>
-
-    </div>
-
-
-    <!-- SEARCH -->
-
-    <div class="search-panel">
-
-        <div class="search-title">
-            <span class="search-symbol">⌕</span>
-
+        <div class="hero">
             <div>
-                <h3>AI Room Finder</h3>
+                <span class="tag">SMART CAMPUS</span>
+                <h2>Attendance + Room Intelligence</h2>
                 <p>
-                    Describe what you need in your own words.
+                    Manage attendance and discover available classrooms
+                    using timetable-based campus data.
                 </p>
             </div>
+
+            <div class="hero-icon">
+                🏫
+            </div>
         </div>
 
 
-        <div class="search-row">
+        <div class="stats">
+
+            <div class="stat-card">
+                <span>📊</span>
+                <h3 id="attendanceValue">75%</h3>
+                <p>Attendance</p>
+            </div>
+
+            <div class="stat-card">
+                <span>🏫</span>
+                <h3 id="roomCount">0</h3>
+                <p>Rooms Indexed</p>
+            </div>
+
+            <div class="stat-card">
+                <span>🟢</span>
+                <h3 id="availableCount">0</h3>
+                <p>Available Now</p>
+            </div>
+
+            <div class="stat-card">
+                <span>📅</span>
+                <h3>10</h3>
+                <p>Timetables</p>
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+            <div class="panel">
+
+                <h2>Attendance Calculator</h2>
+
+                <div class="input-grid">
+
+                    <div>
+                        <label>Total Classes</label>
+                        <input id="totalClasses" type="number" value="40">
+                    </div>
+
+                    <div>
+                        <label>Classes Attended</label>
+                        <input id="attendedClasses" type="number" value="30">
+                    </div>
+
+                </div>
+
+                <button class="primary-btn" onclick="calculateAttendance()">
+                    Calculate Attendance
+                </button>
+
+                <div id="attendanceResult" class="result-box">
+                    Current Attendance: 75%
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <h2>Quick Room Search</h2>
+
+                <p class="muted">
+                    Try:
+                    <b>"Find an available room"</b>,
+                    <b>"IST room"</b>,
+                    or
+                    <b>"ground floor"</b>
+                </p>
+
+                <div class="search-box">
+                    <input
+                        id="quickSearch"
+                        placeholder="What room do you need?"
+                    >
+
+                    <button onclick="searchRooms()">
+                        🔎 Search
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- SMART ROOMS -->
+
+    <section id="rooms" class="section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="tag">PHASE 2</span>
+                <h2>Smart Room Finder</h2>
+
+                <p>
+                    Find rooms using natural language and timetable data.
+                </p>
+            </div>
+
+            <button class="secondary-btn" onclick="resetRooms()">
+                Reset
+            </button>
+
+        </div>
+
+
+        <div class="smart-search">
 
             <input
-                type="text"
                 id="roomSearch"
-                placeholder="Example: I need an AC room on ground floor for 2 hours"
-                onkeydown="handleSearchKey(event)"
+                placeholder="Example: I need a free IST room"
+                onkeydown="if(event.key==='Enter') searchRooms()"
             >
 
-            <button
-                class="primary-btn"
-                onclick="smartSearch()"
-            >
-                Find Rooms
+            <button onclick="searchRooms()">
+                🔎 Find Room
             </button>
 
         </div>
 
 
-        <div class="quick-searches">
+        <div class="filter-row">
 
-            <button onclick="quickSearch('AC ground floor')">
-                AC + Ground Floor
+            <button onclick="filterRooms('all')">
+                All
             </button>
 
-            <button onclick="quickSearch('large room')">
-                Large Room
+            <button onclick="filterRooms('available')">
+                🟢 Available
             </button>
 
-            <button onclick="quickSearch('projector')">
-                Projector
+            <button onclick="filterRooms('busy')">
+                🔴 Busy
             </button>
 
-            <button onclick="quickSearch('2 hours')">
-                2 Hours
+            <button onclick="filterRooms('ist')">
+                IST Rooms
+            </button>
+
+            <button onclick="filterRooms('lab')">
+                Labs
             </button>
 
         </div>
 
-    </div>
+
+        <div id="searchMessage" class="search-message">
+            Showing rooms from the uploaded timetable dataset.
+        </div>
 
 
-    <!-- FILTERS -->
+        <div id="roomGrid" class="room-grid"></div>
 
-    <div class="filters">
+    </section>
 
-        <select id="floorFilter" onchange="renderRooms()">
-
-            <option value="all">
-                All Floors
-            </option>
-
-            <option value="Ground">
-                Ground Floor
-            </option>
-
-            <option value="First">
-                First Floor
-            </option>
-
-            <option value="Second">
-                Second Floor
-            </option>
-
-        </select>
-
-
-        <select id="capacityFilter" onchange="renderRooms()">
-
-            <option value="all">
-                Any Capacity
-            </option>
-
-            <option value="30">
-                30+ Students
-            </option>
-
-            <option value="50">
-                50+ Students
-            </option>
-
-            <option value="80">
-                80+ Students
-            </option>
-
-        </select>
-
-
-        <select id="featureFilter" onchange="renderRooms()">
-
-            <option value="all">
-                Any Facility
-            </option>
-
-            <option value="AC">
-                AC
-            </option>
-
-            <option value="Projector">
-                Projector
-            </option>
-
-            <option value="Smart Board">
-                Smart Board
-            </option>
-
-        </select>
-
-    </div>
 
 
     <!-- MAP -->
 
-    <div class="map-section">
+    <section id="map" class="section">
 
-        <div class="map-header">
+        <div class="section-heading">
 
             <div>
-                <p class="eyebrow">VISUAL MAP</p>
-                <h2>Campus Room Map</h2>
-            </div>
+                <span class="tag">VISUAL CAMPUS</span>
+                <h2>Room Map</h2>
 
-            <div class="legend">
-
-                <span>
-                    <i class="available-dot"></i>
-                    Available
-                </span>
-
-                <span>
-                    <i class="busy-dot"></i>
-                    Occupied
-                </span>
-
+                <p>
+                    Visual representation of rooms indexed from the
+                    timetable dataset.
+                </p>
             </div>
 
         </div>
@@ -316,253 +236,59 @@
         <div class="building">
 
             <div class="building-top">
-                VIBECRAFT ACADEMIC BLOCK
+                <span>SRM IST — TIRUCHIRAPPALLI CAMPUS</span>
+                <span>LIVE ROOM VIEW</span>
             </div>
 
 
             <div class="floor">
 
-                <div class="floor-label">
-                    GROUND FLOOR
+                <div class="floor-title">
+                    <span>ROOM INDEX</span>
+                    <small>Timetable-based</small>
                 </div>
 
-                <div
-                    id="groundRooms"
-                    class="room-grid"
-                ></div>
-
-            </div>
-
-
-            <div class="floor">
-
-                <div class="floor-label">
-                    FIRST FLOOR
-                </div>
-
-                <div
-                    id="firstRooms"
-                    class="room-grid"
-                ></div>
-
-            </div>
-
-
-            <div class="floor">
-
-                <div class="floor-label">
-                    SECOND FLOOR
-                </div>
-
-                <div
-                    id="secondRooms"
-                    class="room-grid"
-                ></div>
+                <div id="mapRooms" class="map-rooms"></div>
 
             </div>
 
         </div>
 
-    </div>
 
+        <div class="map-note">
 
-    <!-- SEARCH RESULTS -->
-
-    <div id="searchResults" class="search-results">
-
-        <div class="results-header">
-
-            <h2>
-                Matching Rooms
-            </h2>
-
-            <span id="resultCount">
-                0 rooms
-            </span>
-
-        </div>
-
-        <div id="resultGrid" class="result-grid"></div>
-
-    </div>
-
-</section>
-
-
-
-<!-- ================= ATTENDANCE ================= -->
-
-<section id="attendance" class="section">
-
-    <div class="section-heading">
-
-        <div>
-
-            <p class="eyebrow">
-                ATTENDANCE
-            </p>
-
-            <h2>
-                Smart Attendance Dashboard
-            </h2>
+            <strong>ℹ️ Dataset-based mapping</strong>
 
             <p>
-                Quickly record and monitor your attendance.
+                Room names are taken from the uploaded timetable PDFs.
+                Availability is calculated from the timetable information
+                available to the application.
             </p>
 
         </div>
 
-    </div>
-
-
-    <div class="attendance-layout">
-
-        <div class="attendance-card">
-
-            <h3>
-                Mark Today's Attendance
-            </h3>
-
-            <div class="attendance-form">
-
-                <input
-                    id="studentName"
-                    type="text"
-                    placeholder="Student Name"
-                >
-
-                <input
-                    id="subjectName"
-                    type="text"
-                    placeholder="Subject"
-                >
-
-                <select id="attendanceStatus">
-
-                    <option value="Present">
-                        Present
-                    </option>
-
-                    <option value="Absent">
-                        Absent
-                    </option>
-
-                </select>
-
-                <button
-                    class="primary-btn"
-                    onclick="markAttendance()"
-                >
-                    Save Attendance
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div class="attendance-stats">
-
-            <div>
-                <strong id="presentCount">
-                    0
-                </strong>
-
-                <span>
-                    Present
-                </span>
-            </div>
-
-            <div>
-                <strong id="absentCount">
-                    0
-                </strong>
-
-                <span>
-                    Absent
-                </span>
-            </div>
-
-            <div>
-                <strong id="attendancePercentage">
-                    0%
-                </strong>
-
-                <span>
-                    Attendance
-                </span>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="attendance-table-container">
-
-        <h3>
-            Attendance Records
-        </h3>
-
-        <table>
-
-            <thead>
-
-                <tr>
-                    <th>Student</th>
-                    <th>Subject</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                </tr>
-
-            </thead>
-
-            <tbody id="attendanceTable"></tbody>
-
-        </table>
-
-    </div>
-
-</section>
+    </section>
 
 </main>
 
 
 
-<!-- ================= ROOM MODAL ================= -->
+<!-- ROOM MODAL -->
 
-<div
-    id="roomModal"
-    class="modal"
-    onclick="closeModalOutside(event)"
->
+<div id="roomModal" class="modal">
 
     <div class="modal-content">
 
-        <button
-            class="close-btn"
-            onclick="closeRoomModal()"
-        >
-            ×
-        </button>
+        <button class="close-btn" onclick="closeModal()">×</button>
 
-
-        <div id="modalRoomContent"></div>
+        <div id="modalBody"></div>
 
     </div>
 
 </div>
 
 
-
-<!-- ================= TOAST ================= -->
-
-<div
-    id="toast"
-    class="toast"
->
-    Message
-</div>
+<div id="toast" class="toast"></div>
 
 
 <script src="script.js"></script>
