@@ -1,2318 +1,1487 @@
 /* =========================================================
-   ATTENDANCE AI - VIBECRAFT
-   Core Calculator + Charts + Leave Simulator + AI Advisor
-   ========================================================= */
+   VIBECRAFT SMART ROOM SYSTEM
+========================================================= */
 
 
 /* =========================================================
-   1. SECTION / TIMETABLE DATA
-   ========================================================= */
+   ROOM DATA
+========================================================= */
 
-const timetableData = {
+const rooms = [
 
-    "I-ECE-A": {
+    {
+        id: "G101",
+        floor: "Ground",
+        capacity: 60,
+        features: ["AC", "Projector", "Smart Board"],
+        classes: [
+            ["09:00", "10:00"],
+            ["11:00", "12:00"],
+            ["14:00", "15:00"]
+        ]
+    },
 
-        subjects: {
-            A: "Advanced Calculus & Complex Analysis",
-            B: "Chemistry",
-            C: "Electronic System & PCB Design",
-            D: "Programming for Problem Solving",
-            E: "Philosophy of Engineering",
-            F: "General Aptitude",
-            G: "Biology",
-            H: "German",
-            I: "Basic Civil & Mechanical Workshop"
-        },
+    {
+        id: "G102",
+        floor: "Ground",
+        capacity: 40,
+        features: ["AC", "Projector"],
+        classes: [
+            ["10:00", "11:00"],
+            ["13:00", "14:00"],
+            ["16:00", "17:00"]
+        ]
+    },
 
-        days: {
+    {
+        id: "G103",
+        floor: "Ground",
+        capacity: 80,
+        features: ["AC", "Projector", "Smart Board"],
+        classes: [
+            ["09:00", "11:00"],
+            ["12:00", "13:00"],
+            ["15:00", "16:00"]
+        ]
+    },
 
-            Monday: ["E", "E", "B", "B", "A", "", "C", "C", ""],
+    {
+        id: "G104",
+        floor: "Ground",
+        capacity: 30,
+        features: ["Projector"],
+        classes: [
+            ["08:00", "09:00"],
+            ["11:00", "12:30"],
+            ["14:00", "15:00"]
+        ]
+    },
 
-            Tuesday: ["C", "B", "A", "D", "D", "", "I", "I", ""],
-
-            Wednesday: ["B", "D", "D", "", "A", "F", "F", "C", "C"],
-
-            Thursday: ["A", "C", "B", "D", "", "H", "H", "", ""],
-
-            Friday: ["D", "A", "C", "F", "", "E", "E", "", ""]
-
-        }
-
+    {
+        id: "G105",
+        floor: "Ground",
+        capacity: 100,
+        features: ["AC", "Projector", "Smart Board"],
+        classes: [
+            ["09:00", "10:00"],
+            ["10:00", "12:00"],
+            ["14:00", "16:00"]
+        ]
     },
 
 
-    "II-BME": {
+    {
+        id: "F201",
+        floor: "First",
+        capacity: 50,
+        features: ["AC", "Projector"],
+        classes: [
+            ["09:00", "10:00"],
+            ["11:00", "13:00"],
+            ["15:00", "16:00"]
+        ]
+    },
 
-        subjects: {
-            A: "Transforms & Boundary Value Problems",
-            B: "Biomedical Signals & Systems",
-            C: "Biomedical Engineering / Signals",
-            D: "Digital Logic for Medical Systems",
-            E: "Medical Physics",
-            F: "Professional Ethics",
-            G: "Universal Human Values-II",
-            H: "Verbal Reasoning",
-            I: "Social Engineering"
-        },
+    {
+        id: "F202",
+        floor: "First",
+        capacity: 70,
+        features: ["AC", "Smart Board"],
+        classes: [
+            ["10:00", "11:00"],
+            ["13:00", "14:00"],
+            ["16:00", "17:00"]
+        ]
+    },
 
-        days: {
+    {
+        id: "F203",
+        floor: "First",
+        capacity: 40,
+        features: ["Projector", "Smart Board"],
+        classes: [
+            ["08:00", "09:00"],
+            ["12:00", "13:00"],
+            ["15:00", "16:00"]
+        ]
+    },
 
-            Monday: ["E", "C", "C", "", "T", "", "E", "", ""],
+    {
+        id: "F204",
+        floor: "First",
+        capacity: 90,
+        features: ["AC", "Projector"],
+        classes: [
+            ["09:00", "11:00"],
+            ["13:00", "15:00"]
+        ]
+    },
 
-            Tuesday: ["C", "E", "B", "B", "A", "H", "B", "", ""],
-
-            Wednesday: ["B", "D", "A", "A", "", "H", "G", "A", ""],
-
-            Thursday: ["A", "E", "B", "D", "", "", "", "", ""],
-
-            Friday: ["F", "A", "C", "D", "", "G", "", "", ""]
-
-        }
-
+    {
+        id: "F205",
+        floor: "First",
+        capacity: 35,
+        features: ["AC"],
+        classes: [
+            ["10:00", "12:00"],
+            ["14:00", "15:00"],
+            ["16:00", "17:00"]
+        ]
     },
 
 
-    "II-ECE-DS-A": {
-
-        subjects: {
-            A: "Transforms & Boundary Value Problems",
-            B: "Solid State Devices",
-            C: "Computer Organization & Architecture",
-            D: "Digital Logic Design",
-            E: "Electromagnetic Theory",
-            F: "Professional Ethics",
-            G: "Universal Human Values-II",
-            H: "Verbal Reasoning",
-            I: "Social Engineering"
-        },
-
-        days: {
-
-            Monday: ["E", "A", "", "I", "G", "", "I", "", ""],
-
-            Tuesday: ["C", "A", "B", "B", "D", "G", "B", "H", ""],
-
-            Wednesday: ["A", "B", "A", "C", "D", "", "A", "", ""],
-
-            Thursday: ["B", "C", "A", "F", "I", "I", "", "", ""],
-
-            Friday: ["D", "B", "E", "C", "", "", "", "", ""]
-
-        }
-
+    {
+        id: "S301",
+        floor: "Second",
+        capacity: 60,
+        features: ["AC", "Projector"],
+        classes: [
+            ["09:00", "10:00"],
+            ["12:00", "13:00"],
+            ["15:00", "17:00"]
+        ]
     },
 
-
-    "II-ECE-DS-B": {
-
-        subjects: {
-            A: "Transforms & Boundary Value Problems",
-            B: "Solid State Devices",
-            C: "Computer Organization & Architecture",
-            D: "Digital Logic Design",
-            E: "Electromagnetic Theory",
-            F: "Professional Ethics",
-            G: "Universal Human Values-II",
-            H: "Verbal Reasoning",
-            I: "Social Engineering"
-        },
-
-        days: {
-
-            Monday: ["I", "I", "D", "B", "", "C", "I", "", ""],
-
-            Tuesday: ["I", "I", "G", "C", "D", "B", "E", "A", ""],
-
-            Wednesday: ["I", "A", "I", "", "I", "A", "D", "", ""],
-
-            Thursday: ["G", "H", "A", "C", "B", "E", "", "", ""],
-
-            Friday: ["H", "E", "A", "B", "C", "", "", "", ""]
-
-        }
-
+    {
+        id: "S302",
+        floor: "Second",
+        capacity: 45,
+        features: ["Projector"],
+        classes: [
+            ["10:00", "11:00"],
+            ["13:00", "14:00"]
+        ]
     },
 
-
-    "III-BME": {
-
-        subjects: {
-            A: "Probability & Statistics",
-            B: "Microprocessors & Microcontrollers",
-            C: "Biomedical Signal Processing",
-            D: "Biometrics",
-            E: "Modern Wireless Communication",
-            F: "Principles of Medical Imaging",
-            G: "Analytical Thinking",
-            H: "Indian Art Form",
-            I: "Community Connect"
-        },
-
-        days: {
-
-            Monday: ["G", "G", "", "B", "B", "F", "H", "", ""],
-
-            Tuesday: ["B", "G", "C", "D", "B", "A", "B", "", ""],
-
-            Wednesday: ["A", "C", "A", "A", "F", "", "D", "A", ""],
-
-            Thursday: ["A", "C", "E", "B", "", "", "", "", ""],
-
-            Friday: ["F", "A", "D", "E", "", "", "", "", ""]
-
-        }
-
+    {
+        id: "S303",
+        floor: "Second",
+        capacity: 80,
+        features: ["AC", "Projector", "Smart Board"],
+        classes: [
+            ["09:00", "12:00"],
+            ["14:00", "15:00"]
+        ]
     },
 
-
-    "III-ECE-A": {
-
-        subjects: {
-            A: "Discrete Mathematics",
-            B: "Microprocessor, Microcontroller & Interfacing",
-            C: "VLSI Design & Technology",
-            D: "System & Network on Chip",
-            E: "Machine Learning for All",
-            F: "Community Connect",
-            G: "Analytical Thinking",
-            H: "Indian Art Form",
-            I: "VLSI / Microprocessor Laboratory"
-        },
-
-        days: {
-
-            Monday: ["E", "B", "B", "B", "A", "G", "", "", ""],
-
-            Tuesday: ["H", "D", "B", "B", "B", "G", "B", "", ""],
-
-            Wednesday: ["C", "A", "A", "D", "F", "", "A", "I", "I"],
-
-            Thursday: ["A", "E", "C", "F", "", "", "", "", ""],
-
-            Friday: ["D", "A", "E", "C", "I", "I", "", "", ""]
-
-        }
-
+    {
+        id: "S304",
+        floor: "Second",
+        capacity: 30,
+        features: ["Smart Board"],
+        classes: [
+            ["08:00", "10:00"],
+            ["12:00", "13:00"],
+            ["16:00", "17:00"]
+        ]
     },
 
+    {
+        id: "S305",
+        floor: "Second",
+        capacity: 100,
+        features: ["AC", "Projector", "Smart Board"],
+        classes: [
+            ["10:00", "12:00"],
+            ["14:00", "16:00"]
+        ]
+    }
 
-    "III-ECE-B": {
-
-        subjects: {
-            A: "Discrete Mathematics",
-            B: "Microprocessor, Microcontroller & Interfacing",
-            C: "VLSI Design & Technology",
-            D: "System & Network on Chip",
-            E: "Machine Learning for All",
-            F: "Community Connect",
-            G: "Analytical Thinking",
-            H: "Indian Art Form",
-            I: "VLSI / Microprocessor Laboratory"
-        },
-
-        days: {
-
-            Monday: ["I", "I", "E", "B", "B", "A", "D", "", ""],
-
-            Tuesday: ["G", "B", "F", "B", "B", "D", "C", "", ""],
-
-            Wednesday: ["A", "G", "I", "B", "A", "A", "H", "", ""],
-
-            Thursday: ["I", "I", "A", "C", "E", "F", "", "", ""],
-
-            Friday: ["C", "A", "E", "D", "", "", "", "", ""]
-
-        }
-
-    },
+];
 
 
-    "III-ECE-DS": {
 
-        subjects: {
-            A: "Discrete Mathematics",
-            B: "Microprocessor, Microcontroller & Interfacing",
-            C: "VLSI Design & Technology",
-            D: "Machine Learning for All",
-            E: "Project Design Management",
-            F: "Community Connect",
-            G: "Analytical Thinking",
-            H: "Indian Art Form",
-            I: "VLSI Design / Microprocessor Laboratory"
-        },
+/* =========================================================
+   PAGE NAVIGATION
+========================================================= */
 
-        days: {
+function showSection(sectionId) {
 
-            Monday: ["E", "B", "B", "C", "A", "D", "", "", ""],
+    document.querySelectorAll(".section")
+        .forEach(section => {
 
-            Tuesday: ["C", "B", "B", "D", "F", "I", "B", "", ""],
+            section.classList.remove("active");
 
-            Wednesday: ["H", "B", "A", "A", "C", "", "A", "G", ""],
+        });
 
-            Thursday: ["A", "D", "E", "F", "", "", "", "", ""],
+    const section =
+        document.getElementById(sectionId);
 
-            Friday: ["D", "A", "E", "B", "G", "I", "", "", ""]
+    if (section) {
 
-        }
+        section.classList.add("active");
 
-    },
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
 
+    if (sectionId === "rooms") {
 
-    "IV-ECE-A": {
+        renderRooms();
 
-        subjects: {
-            A: "Behavioural Psychology",
-            B: "Wireless Communication & Antenna Systems",
-            C: "Computer Communication & Network Security",
-            D: "Semiconductor Memory Design",
-            E: "Scripting Language for Electronic Design Automation",
-            F: "Machine Learning for All",
-            G: "Computer Communication & Network Security Lab"
-        },
-
-        days: {
-
-            Monday: ["C", "C", "A", "D", "E", "F", "", "", ""],
-
-            Tuesday: ["C", "D", "B", "B", "F", "B", "", "", ""],
-
-            Wednesday: ["B", "G", "G", "E", "F", "", "A", "", ""],
-
-            Thursday: ["F", "A", "E", "B", "", "", "", "", ""],
-
-            Friday: ["C", "A", "D", "E", "", "", "", "", ""]
-
-        }
-
-    },
-
-
-    "IV-ECE-B": {
-
-        subjects: {
-            A: "Behavioural Psychology",
-            B: "Wireless Communication & Antenna Systems",
-            C: "Embedded Systems",
-            D: "Semiconductor Memory Design",
-            E: "Scripting Language for Electronic Design Automation",
-            F: "Machine Learning for All",
-            G: "Computer Communication & Network Security Lab"
-        },
-
-        days: {
-
-            Monday: ["C", "A", "A", "E", "F", "B", "", "", ""],
-
-            Tuesday: ["C", "E", "B", "F", "B", "B", "", "", ""],
-
-            Wednesday: ["C", "D", "E", "A", "B", "", "A", "", ""],
-
-            Thursday: ["D", "B", "G", "A", "", "", "", "", ""],
-
-            Friday: ["E", "D", "F", "", "", "", "", "", ""]
-
-        }
+        updateDashboardStats();
 
     }
 
-};
+}
 
-
-/* =========================================================
-   2. GLOBAL VARIABLES
-   ========================================================= */
-
-let selectedSection = "";
-let attendanceData = {};
-let attendanceChart = null;
 
 
 /* =========================================================
-   3. INITIALIZATION
-   ========================================================= */
+   TIME HELPERS
+========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+function timeToMinutes(time) {
 
-    setToday();
+    const [hours, minutes] =
+        time.split(":").map(Number);
 
-    setDefaultPlanningDate();
-
-    initializeEmptyDashboard();
-
-    document.getElementById("sectionSelect").value = "";
-
-});
+    return hours * 60 + minutes;
+}
 
 
-/* =========================================================
-   4. DATE FUNCTIONS
-   ========================================================= */
-
-function getTodayISO() {
+function getCurrentMinutes() {
 
     const now = new Date();
 
-    const year = now.getFullYear();
-
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-
-    const day = String(now.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
+    return (
+        now.getHours() * 60 +
+        now.getMinutes()
+    );
 }
 
 
-function setToday() {
+function getCurrentSeconds() {
 
-    const today = getTodayISO();
+    const now = new Date();
 
-    document.getElementById("currentDate").value = today;
-
-    document.getElementById("todayDate").textContent =
-        formatDate(today);
-}
-
-
-function setDefaultPlanningDate() {
-
-    const today = new Date();
-
-    const future = new Date(today);
-
-    future.setDate(today.getDate() + 30);
-
-    document.getElementById("planningDate").value =
-        dateToISO(future);
-}
-
-
-function dateToISO(date) {
-
-    return date.toISOString().split("T")[0];
-
-}
-
-
-function formatDate(value) {
-
-    if (!value) return "--";
-
-    const date = new Date(value + "T00:00:00");
-
-    return date.toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric"
-    });
-
-}
-
-
-/* =========================================================
-   5. NAVIGATION
-   ========================================================= */
-
-function showSection(id, button) {
-
-    document.querySelectorAll(".page-section")
-        .forEach(section => section.classList.remove("active"));
-
-    document.getElementById(id)
-        .classList.add("active");
-
-    document.querySelectorAll(".nav-item")
-        .forEach(item => item.classList.remove("active"));
-
-    if (button) {
-        button.classList.add("active");
-    }
-
-    const titles = {
-
-        dashboard: "Attendance Dashboard",
-
-        calculator: "Core Attendance Calculator",
-
-        subjects: "Subject Attendance",
-
-        simulator: "OD & Medical Leave Simulator",
-
-        timetable: "Section Timetable"
-
-    };
-
-    document.getElementById("pageTitle").textContent =
-        titles[id] || "Attendance AI";
-
-    if (id === "subjects") {
-        renderFullSubjects();
-    }
-
-}
-
-
-function showSectionById(id) {
-
-    const button = [...document.querySelectorAll(".nav-item")]
-        .find(btn => btn.getAttribute("onclick")?.includes(`'${id}'`));
-
-    showSection(id, button);
-
-}
-
-
-/* =========================================================
-   6. SECTION LOADING
-   ========================================================= */
-
-function loadSection() {
-
-    selectedSection =
-        document.getElementById("sectionSelect").value;
-
-    if (!selectedSection) return;
-
-    const data = timetableData[selectedSection];
-
-    attendanceData = {};
-
-    Object.keys(data.subjects).forEach(slot => {
-
-        attendanceData[slot] = {
-
-            name: data.subjects[slot],
-
-            attended: 0,
-
-            total: 0
-
-        };
-
-    });
-
-    renderCalculatorSubjects();
-
-    updateSimulatorSubjects();
-
-    renderTimetableFromSection(selectedSection);
-
-}
-
-
-/* =========================================================
-   7. SUBJECT INPUTS
-   ========================================================= */
-
-function renderCalculatorSubjects() {
-
-    const container =
-        document.getElementById("calculatorSubjects");
-
-    container.innerHTML = "";
-
-    Object.entries(attendanceData).forEach(([slot, subject]) => {
-
-        const div = document.createElement("div");
-
-        div.className = "attendance-input";
-
-        div.innerHTML = `
-
-            <h4>${subject.name}</h4>
-
-            <div class="input-pair">
-
-                <div>
-                    <label>Classes Attended</label>
-
-                    <input
-                        type="number"
-                        min="0"
-                        value="${subject.attended}"
-                        id="attended-${slot}"
-                        onchange="updateAttendance('${slot}')"
-                    >
-                </div>
-
-                <div>
-                    <label>Total Conducted</label>
-
-                    <input
-                        type="number"
-                        min="0"
-                        value="${subject.total}"
-                        id="total-${slot}"
-                        onchange="updateAttendance('${slot}')"
-                    >
-                </div>
-
-            </div>
-        `;
-
-        container.appendChild(div);
-
-    });
-
-}
-
-
-function updateAttendance(slot) {
-
-    if (!attendanceData[slot]) return;
-
-    let attended =
-        Number(document.getElementById(`attended-${slot}`).value);
-
-    let total =
-        Number(document.getElementById(`total-${slot}`).value);
-
-    if (attended < 0) attended = 0;
-
-    if (total < 0) total = 0;
-
-    if (attended > total) {
-        attended = total;
-
-        document.getElementById(`attended-${slot}`).value =
-            attended;
-    }
-
-    attendanceData[slot].attended = attended;
-
-    attendanceData[slot].total = total;
-
-    updateDashboard();
-
-}
-
-
-/* =========================================================
-   8. DEMO DATA
-   ========================================================= */
-
-function loadDemoData() {
-
-    if (!selectedSection) {
-
-        alert("Please select a section first.");
-
-        return;
-
-    }
-
-    const demo = {
-
-        A: [42, 52],
-
-        B: [36, 50],
-
-        C: [40, 48],
-
-        D: [45, 55],
-
-        E: [33, 45],
-
-        F: [28, 34],
-
-        G: [31, 38],
-
-        H: [24, 30],
-
-        I: [18, 22]
-
-    };
-
-
-    Object.entries(attendanceData).forEach(([slot]) => {
-
-        const values =
-            demo[slot] || [30, 40];
-
-        attendanceData[slot].attended =
-            values[0];
-
-        attendanceData[slot].total =
-            values[1];
-
-    });
-
-
-    renderCalculatorSubjects();
-
-    updateDashboard();
-
-}
-
-
-/* =========================================================
-   9. CALCULATIONS
-   ========================================================= */
-
-function percentage(attended, total) {
-
-    if (total <= 0) return 0;
-
-    return (attended / total) * 100;
-
-}
-
-
-function requiredClassesForTarget(
-    attended,
-    total,
-    target
-) {
-
-    /*
-       Find x such that:
-
-       (attended + x) / (total + x) >= target
-
-       x >= (target*total - attended) / (1-target)
-    */
-
-    if (total === 0) return 0;
-
-    if (percentage(attended, total) >= target) {
-        return 0;
-    }
-
-    const x =
-        Math.ceil(
-            ((target * total) - attended) /
-            (1 - target)
-        );
-
-    return Math.max(0, x);
-
-}
-
-
-function maxPossiblePercentage(
-    attended,
-    total,
-    remaining
-) {
-
-    return percentage(
-        attended + remaining,
-        total + remaining
+    return (
+        now.getHours() * 3600 +
+        now.getMinutes() * 60 +
+        now.getSeconds()
     );
 
 }
 
 
-function classesCanMiss(
-    attended,
-    total,
-    target
-) {
-
-    /*
-        Find maximum x such that:
-
-        attended / (total + x) >= target
-    */
-
-    if (total === 0) return 0;
-
-    if (percentage(attended, total) < target) {
-        return -1;
-    }
-
-    const x =
-        Math.floor(
-            (attended / target) - total
-        );
-
-    return Math.max(0, x);
-
-}
-
 
 /* =========================================================
-   10. TIMETABLE COUNTING
-   ========================================================= */
+   ROOM AVAILABILITY
+========================================================= */
 
-function getDayName(date) {
+function getRoomStatus(room) {
 
-    return date.toLocaleDateString("en-US", {
-        weekday: "long"
-    });
+    const current =
+        getCurrentMinutes();
 
-}
+    for (const classTime of room.classes) {
 
+        const start =
+            timeToMinutes(classTime[0]);
 
-function countClasses(
-    section,
-    startDate,
-    endDate
-) {
+        const end =
+            timeToMinutes(classTime[1]);
 
-    const sectionData =
-        timetableData[section];
+        if (
+            current >= start &&
+            current < end
+        ) {
 
-    if (!sectionData) {
+            return {
 
-        return {};
+                available: false,
 
-    }
+                currentClass: classTime[0]
+                    + " - "
+                    + classTime[1],
 
+                nextStart: null,
 
-    const counts = {};
+                minutesRemaining:
+                    end - current
 
-    Object.keys(sectionData.subjects)
-        .forEach(slot => counts[slot] = 0);
-
-
-    let current =
-        new Date(startDate + "T00:00:00");
-
-    const end =
-        new Date(endDate + "T00:00:00");
-
-
-    while (current <= end) {
-
-        const day =
-            getDayName(current);
-
-        const schedule =
-            sectionData.days[day];
-
-
-        if (schedule) {
-
-            schedule.forEach(slot => {
-
-                if (
-                    slot &&
-                    counts.hasOwnProperty(slot)
-                ) {
-
-                    counts[slot]++;
-
-                }
-
-            });
+            };
 
         }
 
+    }
 
-        current.setDate(
-            current.getDate() + 1
-        );
+
+    let nextClass = null;
+
+    for (const classTime of room.classes) {
+
+        const start =
+            timeToMinutes(classTime[0]);
+
+        if (start > current) {
+
+            nextClass = classTime;
+
+            break;
+
+        }
 
     }
 
 
-    return counts;
+    return {
+
+        available: true,
+
+        currentClass: null,
+
+        nextStart:
+            nextClass
+                ? nextClass[0]
+                : null,
+
+        minutesRemaining:
+            nextClass
+                ? timeToMinutes(nextClass[0])
+                    - current
+                : null
+
+    };
 
 }
 
 
-/* =========================================================
-   11. CORE CALCULATOR
-   ========================================================= */
-
-function runCoreCalculation() {
-
-    if (!selectedSection) {
-
-        alert("Please select your class section.");
-
-        return;
-
-    }
-
-
-    const planningDate =
-        document.getElementById("planningDate").value;
-
-    const semesterEnd =
-        document.getElementById("semesterEnd").value;
-
-    const currentDate =
-        document.getElementById("currentDate").value;
-
-
-    if (!planningDate) {
-
-        alert("Please select a planning date.");
-
-        return;
-
-    }
-
-
-    if (planningDate < currentDate) {
-
-        alert("Planning date must be after today.");
-
-        return;
-
-    }
-
-
-    if (semesterEnd < planningDate) {
-
-        alert("Semester end must be after the planning date.");
-
-        return;
-
-    }
-
-
-    if (Object.keys(attendanceData).length === 0) {
-
-        alert("Enter your current attendance first.");
-
-        return;
-
-    }
-
-
-    const remainingToPlanning =
-        countClasses(
-            selectedSection,
-            currentDate,
-            planningDate
-        );
-
-
-    const remainingSemester =
-        countClasses(
-            selectedSection,
-            currentDate,
-            semesterEnd
-        );
-
-
-    renderCalculatorResults(
-        remainingToPlanning,
-        remainingSemester
-    );
-
-
-    checkDetention(
-        remainingToPlanning
-    );
-
-}
-
 
 /* =========================================================
-   12. CALCULATOR RESULTS
-   ========================================================= */
+   ROOM RENDERING
+========================================================= */
 
-function renderCalculatorResults(
-    remainingToPlanning,
-    remainingSemester
-) {
+function renderRooms() {
 
-    const container =
-        document.getElementById("calculatorResults");
+    const floor =
+        document.getElementById("floorFilter").value;
 
-    let html = "";
+    const capacity =
+        document.getElementById("capacityFilter").value;
 
-    let totalRemaining = 0;
+    const feature =
+        document.getElementById("featureFilter").value;
 
-    let totalRequired75 = 0;
 
-    let totalRequired90 = 0;
+    const filtered =
+        rooms.filter(room => {
 
+            if (
+                floor !== "all" &&
+                room.floor !== floor
+            ) {
 
-    Object.entries(attendanceData)
-        .forEach(([slot, subject]) => {
+                return false;
 
-            const current =
-                percentage(
-                    subject.attended,
-                    subject.total
-                );
-
-
-            const remaining =
-                remainingSemester[slot] || 0;
-
-            const required75 =
-                requiredClassesForTarget(
-                    subject.attended,
-                    subject.total,
-                    0.75
-                );
-
-            const required90 =
-                requiredClassesForTarget(
-                    subject.attended,
-                    subject.total,
-                    0.90
-                );
-
-
-            const maximum =
-                maxPossiblePercentage(
-                    subject.attended,
-                    subject.total,
-                    remaining
-                );
-
-
-            const canRecover =
-                maximum >= 75;
-
-
-            totalRemaining += remaining;
-
-            if (required75 > 0)
-                totalRequired75 += required75;
-
-            if (required90 > 0)
-                totalRequired90 += required90;
-
-
-            html += `
-
-                <div class="target-card
-                    ${canRecover ? "safe-target" : "impossible"}">
-
-                    <span class="target-title">
-                        ${subject.name}
-                    </span>
-
-                    <strong>
-                        ${current.toFixed(1)}%
-                    </strong>
-
-                    <small>
-                        ${remaining} scheduled classes remaining
-                    </small>
-
-                    <br>
-
-                    <small>
-                        75% target:
-                        ${
-                            canRecover
-                            ? `${required75} classes needed`
-                            : "Mathematically impossible"
-                        }
-                    </small>
-
-                    <br>
-
-                    <small>
-                        90% target:
-                        ${
-                            maximum >= 90
-                            ? `${required90} classes needed`
-                            : "Cannot reach 90% with remaining classes"
-                        }
-                    </small>
-
-                </div>
-
-            `;
-
-        });
-
-
-    const planningTotal =
-        Object.values(remainingToPlanning)
-            .reduce(
-                (sum, value) => sum + value,
-                0
-            );
-
-
-    html = `
-
-        <div class="target-card safe-target">
-
-            <span class="target-title">
-                TOTAL SEMESTER CLASSES REMAINING
-            </span>
-
-            <strong>${totalRemaining}</strong>
-
-            <small>
-                Based on the selected section timetable
-            </small>
-
-        </div>
-
-        <div class="target-card ninety-target">
-
-            <span class="target-title">
-                CLASSES BETWEEN TODAY & PLANNING DATE
-            </span>
-
-            <strong>${planningTotal}</strong>
-
-            <small>
-                Planning date:
-                ${formatDate(
-                    document.getElementById("planningDate").value
-                )}
-            </small>
-
-        </div>
-
-        ${html}
-
-    `;
-
-
-    container.innerHTML = html;
-
-}
-
-
-/* =========================================================
-   13. IRREVERSIBLE DETENTION
-   ========================================================= */
-
-function checkDetention(remainingToPlanning) {
-
-    const alertBox =
-        document.getElementById("detentionAlert");
-
-    const text =
-        document.getElementById("detentionText");
-
-
-    let impossibleSubjects = [];
-
-
-    Object.entries(attendanceData)
-        .forEach(([slot, subject]) => {
-
-            const remaining =
-                remainingToPlanning[slot] || 0;
-
-
-            const maximum =
-                maxPossiblePercentage(
-                    subject.attended,
-                    subject.total,
-                    remaining
-                );
+            }
 
 
             if (
-                subject.total > 0 &&
-                percentage(
-                    subject.attended,
-                    subject.total
-                ) < 75 &&
-                maximum < 75
+                capacity !== "all" &&
+                room.capacity <
+                Number(capacity)
             ) {
 
-                impossibleSubjects.push(
-                    `${subject.name} (${maximum.toFixed(1)}% maximum)`
-                );
+                return false;
 
             }
 
-        });
 
+            if (
+                feature !== "all" &&
+                !room.features.includes(feature)
+            ) {
 
-    if (impossibleSubjects.length > 0) {
-
-        alertBox.classList.remove("hidden");
-
-        text.textContent =
-            "Recovery to 75% is mathematically impossible by the selected planning date for: " +
-            impossibleSubjects.join(", ") +
-            ". Attend every remaining class and contact your institution if an official attendance remedy is available.";
-
-    } else {
-
-        alertBox.classList.add("hidden");
-
-    }
-
-}
-
-
-/* =========================================================
-   14. DASHBOARD
-   ========================================================= */
-
-function updateDashboard() {
-
-    const subjects =
-        Object.values(attendanceData);
-
-
-    if (subjects.length === 0) {
-
-        initializeEmptyDashboard();
-
-        return;
-
-    }
-
-
-    let attended = 0;
-
-    let total = 0;
-
-
-    subjects.forEach(subject => {
-
-        attended += Number(subject.attended);
-
-        total += Number(subject.total);
-
-    });
-
-
-    const overall =
-        percentage(attended, total);
-
-
-    document.getElementById("overallAttendance")
-        .textContent =
-        overall.toFixed(1) + "%";
-
-
-    document.getElementById("heroPercentage")
-        .textContent =
-        overall.toFixed(1) + "%";
-
-
-    document.getElementById("healthPercentage")
-        .textContent =
-        overall.toFixed(1) + "%";
-
-
-    document.getElementById("classesAttended")
-        .textContent =
-        attended;
-
-
-    document.getElementById("classesMissed")
-        .textContent =
-        Math.max(0, total - attended);
-
-
-    let status = "Safe";
-
-    if (overall < 65) {
-
-        status = "Danger";
-
-    } else if (overall < 75) {
-
-        status = "Warning";
-
-    }
-
-
-    document.getElementById("overallStatus")
-        .textContent =
-        status;
-
-
-    updateHealthRing(overall);
-
-    renderDashboardSubjects();
-
-    renderFullSubjects();
-
-    renderChart();
-
-    updateSimulatorSubjects();
-
-}
-
-
-/* =========================================================
-   15. HEALTH RING
-   ========================================================= */
-
-function updateHealthRing(value) {
-
-    const ring =
-        document.getElementById("healthRing");
-
-
-    const safeValue =
-        Math.max(0, Math.min(100, value));
-
-
-    ring.style.background =
-        `conic-gradient(
-            var(--primary) ${safeValue * 3.6}deg,
-            #edf0f6 ${safeValue * 3.6}deg
-        )`;
-
-}
-
-
-/* =========================================================
-   16. DASHBOARD SUBJECTS
-   ========================================================= */
-
-function renderDashboardSubjects() {
-
-    const container =
-        document.getElementById("dashboardSubjects");
-
-    container.innerHTML = "";
-
-
-    Object.entries(attendanceData)
-        .forEach(([slot, subject]) => {
-
-            const value =
-                percentage(
-                    subject.attended,
-                    subject.total
-                );
-
-
-            const color =
-                value >= 75
-                ? "var(--green)"
-                : value >= 65
-                ? "var(--orange)"
-                : "var(--red)";
-
-
-            container.innerHTML += `
-
-                <div class="subject-row">
-
-                    <div class="subject-name">
-
-                        <strong>${subject.name}</strong>
-
-                        <small>
-                            ${subject.attended}/${subject.total}
-                            classes attended
-                        </small>
-
-                    </div>
-
-                    <div class="subject-percentage">
-                        ${value.toFixed(1)}%
-                    </div>
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar"
-                            style="
-                                width:${Math.min(value,100)}%;
-                                background:${color};
-                            "
-                        ></div>
-
-                    </div>
-
-                    <div></div>
-
-                </div>
-
-            `;
-
-        });
-
-}
-
-
-/* =========================================================
-   17. CHART
-   ========================================================= */
-
-function renderChart() {
-
-    const canvas =
-        document.getElementById("attendanceChart");
-
-    if (!canvas) return;
-
-
-    const labels =
-        Object.values(attendanceData)
-            .map(subject => shortenName(subject.name));
-
-
-    const values =
-        Object.values(attendanceData)
-            .map(subject =>
-                percentage(
-                    subject.attended,
-                    subject.total
-                )
-            );
-
-
-    if (attendanceChart) {
-
-        attendanceChart.destroy();
-
-    }
-
-
-    attendanceChart =
-        new Chart(canvas, {
-
-            type: "bar",
-
-            data: {
-
-                labels,
-
-                datasets: [{
-
-                    label: "Attendance %",
-
-                    data: values,
-
-                    borderRadius: 7,
-
-                    backgroundColor: "#315efb"
-
-                }]
-
-            },
-
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                plugins: {
-
-                    legend: {
-                        display: false
-                    }
-
-                },
-
-                scales: {
-
-                    y: {
-
-                        beginAtZero: true,
-
-                        max: 100,
-
-                        ticks: {
-                            callback: value => value + "%"
-                        }
-
-                    }
-
-                }
+                return false;
 
             }
 
-        });
 
-}
-
-
-function shortenName(name) {
-
-    if (name.length <= 18)
-        return name;
-
-    return name.substring(0, 17) + "...";
-
-}
-
-
-/* =========================================================
-   18. FULL SUBJECTS
-   ========================================================= */
-
-function renderFullSubjects() {
-
-    const container =
-        document.getElementById("fullSubjectList");
-
-    if (!container) return;
-
-
-    if (Object.keys(attendanceData).length === 0) {
-
-        container.innerHTML = `
-
-            <div class="panel">
-
-                <div class="empty-state">
-
-                    <div class="empty-icon">📚</div>
-
-                    <h3>No attendance data</h3>
-
-                    <p>
-                        Select a section and enter attendance data
-                        in the Core Calculator.
-                    </p>
-
-                </div>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    Object.entries(attendanceData)
-        .forEach(([slot, subject]) => {
-
-            const value =
-                percentage(
-                    subject.attended,
-                    subject.total
-                );
-
-
-            const status =
-                value >= 75
-                ? "Safe"
-                : value >= 65
-                ? "Warning"
-                : "Danger";
-
-
-            container.innerHTML += `
-
-                <div class="subject-card">
-
-                    <div class="subject-card-top">
-
-                        <div>
-
-                            <small>Subject</small>
-
-                            <h3>${subject.name}</h3>
-
-                        </div>
-
-                        <div class="big-percentage">
-                            ${value.toFixed(1)}%
-                        </div>
-
-                    </div>
-
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar"
-                            style="
-                                width:${Math.min(value,100)}%;
-                                background:
-                                ${
-                                    value >= 75
-                                    ? "var(--green)"
-                                    : value >= 65
-                                    ? "var(--orange)"
-                                    : "var(--red)"
-                                };
-                            "
-                        ></div>
-
-                    </div>
-
-
-                    <div class="subject-stats">
-
-                        <div class="subject-stat">
-                            <span>Attended</span>
-                            <strong>${subject.attended}</strong>
-                        </div>
-
-                        <div class="subject-stat">
-                            <span>Conducted</span>
-                            <strong>${subject.total}</strong>
-                        </div>
-
-                        <div class="subject-stat">
-                            <span>Status</span>
-                            <strong>${status}</strong>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            `;
+            return true;
 
         });
 
-}
+
+    const ground =
+        document.getElementById("groundRooms");
+
+    const first =
+        document.getElementById("firstRooms");
+
+    const second =
+        document.getElementById("secondRooms");
 
 
-/* =========================================================
-   19. LEAVE SIMULATOR
-   ========================================================= */
-
-function updateSimulatorSubjects() {
-
-    const select =
-        document.getElementById("simSubject");
-
-    if (!select) return;
+    ground.innerHTML = "";
+    first.innerHTML = "";
+    second.innerHTML = "";
 
 
-    select.innerHTML = "";
+    filtered.forEach(room => {
 
+        const card =
+            createRoomCard(room);
 
-    Object.entries(attendanceData)
-        .forEach(([slot, subject]) => {
+        if (room.floor === "Ground") {
 
-            select.innerHTML += `
-
-                <option value="${slot}">
-                    ${subject.name}
-                </option>
-
-            `;
-
-        });
-
-
-    simulateLeave();
-
-}
-
-
-function simulateLeave() {
-
-    if (Object.keys(attendanceData).length === 0) {
-
-        return;
-
-    }
-
-
-    const slot =
-        document.getElementById("simSubject").value;
-
-
-    const leaveType =
-        document.getElementById("leaveType").value;
-
-
-    const days =
-        Math.max(
-            0,
-            Number(
-                document.getElementById("leaveDays").value
-            )
-        );
-
-
-    const subject =
-        attendanceData[slot];
-
-
-    if (!subject) return;
-
-
-    let newAttended =
-        subject.attended;
-
-
-    let newTotal =
-        subject.total + days;
-
-
-    /*
-       Prototype institutional assumption:
-
-       OD = attended/eligible
-       Medical Leave = attended/eligible
-       Normal Leave = absent
-
-       Your institution's actual policy can be changed here.
-    */
-
-    if (
-        leaveType === "od" ||
-        leaveType === "medical"
-    ) {
-
-        newAttended += days;
-
-    }
-
-
-    const projected =
-        percentage(
-            newAttended,
-            newTotal
-        );
-
-
-    document.getElementById("projectedPercentage")
-        .textContent =
-        projected.toFixed(1) + "%";
-
-
-    const message =
-        document.getElementById("simulationStatus");
-
-
-    message.className =
-        "result-message";
-
-
-    if (projected >= 75) {
-
-        message.classList.add("safe");
-
-        if (leaveType === "normal") {
-
-            message.textContent =
-                `${days} normal leave class(es) would change ${subject.name} to ${projected.toFixed(1)}%. You remain at or above 75%.`;
-
-        } else {
-
-            message.textContent =
-                `${days} ${leaveType === "od" ? "OD" : "medical leave"} class(es) are treated as eligible attendance in this simulator. Projected attendance: ${projected.toFixed(1)}%.`;
+            ground.appendChild(card);
 
         }
 
-    } else {
+        if (room.floor === "First") {
 
-        message.classList.add("danger");
+            first.appendChild(card);
 
-        message.textContent =
-            `Warning: projected ${subject.name} attendance is ${projected.toFixed(1)}%, below the 75% threshold.`;
+        }
 
-    }
+        if (room.floor === "Second") {
 
-}
+            second.appendChild(card);
 
+        }
 
-/* =========================================================
-   20. TIMETABLE
-   ========================================================= */
-
-function renderTimetable() {
-
-    const section =
-        document.getElementById("timetableSelect").value;
-
-    if (!section) return;
-
-    renderTimetableFromSection(section);
+    });
 
 }
 
 
-function renderTimetableFromSection(section) {
+function createRoomCard(room) {
 
-    const container =
-        document.getElementById("timetableContainer");
-
-    if (!container) return;
-
-
-    const data =
-        timetableData[section];
-
-
-    if (!data) return;
-
-
-    const periods =
-        [1,2,3,4,5,6,7,8,9];
-
-
-    let html = `
-
-        <table class="timetable">
-
-            <thead>
-
-                <tr>
-
-                    <th>Day</th>
-
-                    ${periods.map(p =>
-                        `<th>Period ${p}</th>`
-                    ).join("")}
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-    `;
-
-
-    Object.entries(data.days)
-        .forEach(([day, slots]) => {
-
-            html += `<tr>`;
-
-            html += `<td>${day}</td>`;
-
-
-            periods.forEach((period, index) => {
-
-                const slot =
-                    slots[index] || "";
-
-
-                if (slot && data.subjects[slot]) {
-
-                    html += `
-
-                        <td>
-
-                            <div class="slot">
-
-                                ${slot}<br>
-
-                                ${shortenName(
-                                    data.subjects[slot]
-                                )}
-
-                            </div>
-
-                        </td>
-
-                    `;
-
-                } else {
-
-                    html += `<td>—</td>`;
-
-                }
-
-            });
-
-
-            html += `</tr>`;
-
-        });
-
-
-    html += `
-
-            </tbody>
-
-        </table>
-
-    `;
-
-
-    container.innerHTML = html;
-
-}
-
-
-/* =========================================================
-   21. CHATBOT
-   ========================================================= */
-
-function toggleChat() {
-
-    document
-        .getElementById("chatWindow")
-        .classList.toggle("open");
-
-}
-
-
-function handleChatKey(event) {
-
-    if (event.key === "Enter") {
-
-        sendChat();
-
-    }
-
-}
-
-
-function useSuggestion(text) {
-
-    document.getElementById("chatInput").value =
-        text;
-
-    sendChat();
-
-}
-
-
-function sendChat() {
-
-    const input =
-        document.getElementById("chatInput");
-
-    const text =
-        input.value.trim();
-
-
-    if (!text) return;
-
-
-    addChatMessage(text, "user");
-
-    input.value = "";
-
-
-    setTimeout(() => {
-
-        const reply =
-            generateAdvisorResponse(text);
-
-        addChatMessage(reply, "bot");
-
-    }, 300);
-
-}
-
-
-function addChatMessage(text, type) {
-
-    const messages =
-        document.getElementById("chatMessages");
-
+    const status =
+        getRoomStatus(room);
 
     const div =
         document.createElement("div");
 
-
     div.className =
-        `message ${type}`;
+        "room "
+        + (
+            status.available
+                ? "available"
+                : "busy"
+        );
+
+    div.onclick =
+        () => openRoom(room.id);
 
 
-    div.innerHTML =
-        text.replace(/\n/g, "<br>");
+    div.innerHTML = `
 
+        <div class="room-name">
+            ${room.id}
+        </div>
 
-    messages.appendChild(div);
+        <div class="room-floor">
+            ${room.floor} Floor
+            • ${room.capacity} seats
+        </div>
 
+        <div class="room-status">
 
-    messages.scrollTop =
-        messages.scrollHeight;
+            ${status.available
+                ? "● AVAILABLE"
+                : "● OCCUPIED"}
+
+        </div>
+
+    `;
+
+    return div;
 
 }
 
 
+
 /* =========================================================
-   22. AI ADVISOR LOGIC
-   ========================================================= */
+   SMART SEARCH
+========================================================= */
 
-function generateAdvisorResponse(question) {
+function handleSearchKey(event) {
 
-    const q =
-        question.toLowerCase();
+    if (event.key === "Enter") {
+
+        smartSearch();
+
+    }
+
+}
 
 
-    if (Object.keys(attendanceData).length === 0) {
+function quickSearch(text) {
 
-        return `
-            I need your attendance data first.
-            <br><br>
-            Go to <b>Core Calculator</b>, select your section,
-            and enter your current attendance.
-        `;
+    document.getElementById("roomSearch")
+        .value = text;
+
+    smartSearch();
+
+}
+
+
+function smartSearch() {
+
+    const input =
+        document.getElementById("roomSearch")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    if (!input) {
+
+        showToast(
+            "Type what kind of room you need."
+        );
+
+        return;
 
     }
 
 
-    /* FIND SUBJECT */
+    const requestedFloor =
+        detectFloor(input);
 
-    let foundSlot = null;
+    const requestedFeature =
+        detectFeature(input);
+
+    const requestedDuration =
+        detectDuration(input);
 
 
-    Object.entries(attendanceData)
-        .forEach(([slot, subject]) => {
+    let matches =
+        rooms.filter(room => {
 
-            const words =
-                subject.name
-                    .toLowerCase()
-                    .split(/\s+/);
+            const status =
+                getRoomStatus(room);
+
+
+            if (!status.available) {
+
+                return false;
+
+            }
 
 
             if (
-                q.includes(subject.name.toLowerCase()) ||
-                words.some(
-                    word =>
-                        word.length > 4 &&
-                        q.includes(word)
+                requestedFloor &&
+                room.floor !== requestedFloor
+            ) {
+
+                return false;
+
+            }
+
+
+            if (
+                requestedFeature &&
+                !room.features.includes(
+                    requestedFeature
                 )
             ) {
 
-                foundSlot = slot;
+                return false;
 
             }
+
+
+            if (
+                requestedDuration &&
+                status.minutesRemaining !== null &&
+                status.minutesRemaining <
+                requestedDuration
+            ) {
+
+                return false;
+
+            }
+
+
+            if (
+                input.includes("large") ||
+                input.includes("big")
+            ) {
+
+                if (room.capacity < 70) {
+
+                    return false;
+
+                }
+
+            }
+
+
+            if (
+                input.includes("small")
+            ) {
+
+                if (room.capacity > 50) {
+
+                    return false;
+
+                }
+
+            }
+
+
+            return true;
 
         });
 
 
-    /* LOWEST */
+    /*
+       If there are no matches, show available
+       rooms instead of leaving the user with
+       an empty interface.
+    */
 
-    if (
-        q.includes("lowest") ||
-        q.includes("worst") ||
-        q.includes("least")
-    ) {
+    if (matches.length === 0) {
 
-        let lowest = null;
+        matches =
+            rooms.filter(room =>
+                getRoomStatus(room).available
+            );
 
-
-        Object.entries(attendanceData)
-            .forEach(([slot, subject]) => {
-
-                const value =
-                    percentage(
-                        subject.attended,
-                        subject.total
-                    );
-
-
-                if (
-                    !lowest ||
-                    value < lowest.value
-                ) {
-
-                    lowest = {
-
-                        slot,
-
-                        value,
-
-                        name: subject.name
-
-                    };
-
-                }
-
-            });
-
-
-        return `
-            Your lowest attendance is
-            <b>${lowest.name}</b> at
-            <b>${lowest.value.toFixed(1)}%</b>.
-            <br><br>
-            ${
-                lowest.value < 75
-                ? "⚠️ This subject is currently below the 75% threshold."
-                : "You are currently above the 75% threshold."
-            }
-        `;
+        showToast(
+            "No exact match. Showing available rooms."
+        );
 
     }
 
 
-    /* SPECIFIC SUBJECT */
-
-    if (foundSlot) {
-
-        const subject =
-            attendanceData[foundSlot];
-
-
-        const current =
-            percentage(
-                subject.attended,
-                subject.total
-            );
-
-
-        /* LEAVE QUESTION */
-
-        const numberMatch =
-            q.match(/\d+/);
-
-
-        if (
-            numberMatch &&
-            (
-                q.includes("leave") ||
-                q.includes("miss") ||
-                q.includes("sick") ||
-                q.includes("absent")
-            )
-        ) {
-
-            const days =
-                Number(numberMatch[0]);
-
-
-            const projected =
-                percentage(
-                    subject.attended,
-                    subject.total + days
-                );
-
-
-            return `
-                If you miss <b>${days}</b> more
-                ${days === 1 ? "class" : "classes"} in
-                <b>${subject.name}</b>:
-                <br><br>
-                Current: <b>${current.toFixed(1)}%</b>
-                <br>
-                Projected: <b>${projected.toFixed(1)}%</b>
-                <br><br>
-                ${
-                    projected < 75
-                    ? "🚨 Warning: this would put you below 75%."
-                    : "✅ You would remain at or above 75%."
-                }
-            `;
-
-        }
-
-
-        /* 90% */
-
-        if (
-            q.includes("90") ||
-            q.includes("ninety")
-        ) {
-
-            const required =
-                requiredClassesForTarget(
-                    subject.attended,
-                    subject.total,
-                    .90
-                );
-
-
-            if (current >= 90) {
-
-                return `
-                    Your <b>${subject.name}</b>
-                    attendance is already
-                    <b>${current.toFixed(1)}%</b>.
-                    You are currently above 90%.
-                `;
-
-            }
-
-
-            return `
-                Your current
-                <b>${subject.name}</b> attendance is
-                <b>${current.toFixed(1)}%</b>.
-                <br><br>
-                You need to attend approximately
-                <b>${required}</b> consecutive classes
-                to reach 90%, assuming no additional absences.
-            `;
-
-        }
-
-
-        /* 75% */
-
-        const required75 =
-            requiredClassesForTarget(
-                subject.attended,
-                subject.total,
-                .75
-            );
-
-
-        const miss =
-            classesCanMiss(
-                subject.attended,
-                subject.total,
-                .75
-            );
-
-
-        return `
-            <b>${subject.name}</b> attendance:
-            <b>${current.toFixed(1)}%</b>.
-            <br><br>
-            To reach 75%:
-            <b>${required75}</b> additional attended classes
-            are required, assuming no further absence.
-            <br><br>
-            ${
-                current >= 75
-                ? `You can currently miss approximately <b>${miss}</b> more class(es) before falling below 75%.`
-                : "You are already below 75%, so avoid additional absences while recovering."
-            }
-        `;
-
-    }
-
-
-    /* GENERAL 90% */
-
-    if (
-        q.includes("90") ||
-        q.includes("ninety")
-    ) {
-
-        const results = [];
-
-
-        Object.values(attendanceData)
-            .forEach(subject => {
-
-                const current =
-                    percentage(
-                        subject.attended,
-                        subject.total
-                    );
-
-
-                const required =
-                    requiredClassesForTarget(
-                        subject.attended,
-                        subject.total,
-                        .90
-                    );
-
-
-                results.push(
-                    `${subject.name}: ${current.toFixed(1)}% → ${required} classes`
-                );
-
-            });
-
-
-        return `
-            To reach 90% in your subjects:
-            <br><br>
-            ${results.join("<br>")}
-            <br><br>
-            These calculations assume you attend every required class and do not add new absences.
-        `;
-
-    }
-
-
-    /* GENERAL */
-
-    if (
-        q.includes("attendance") ||
-        q.includes("percentage") ||
-        q.includes("overall")
-    ) {
-
-        const values =
-            Object.values(attendanceData);
-
-
-        const totalAttended =
-            values.reduce(
-                (sum, item) =>
-                    sum + item.attended,
-                0
-            );
-
-
-        const totalClasses =
-            values.reduce(
-                (sum, item) =>
-                    sum + item.total,
-                0
-            );
-
-
-        const overall =
-            percentage(
-                totalAttended,
-                totalClasses
-            );
-
-
-        return `
-            Your overall attendance is
-            <b>${overall.toFixed(1)}%</b>.
-            <br><br>
-            ${
-                overall >= 75
-                ? "✅ Your overall attendance is currently at or above 75%."
-                : "⚠️ Your overall attendance is currently below 75%."
-            }
-        `;
-
-    }
-
-
-    return `
-        I can calculate your attendance using the
-        data currently stored in your dashboard.
-        <br><br>
-
-        Try asking:
-        <br>
-        • What is my Chemistry attendance?
-        <br>
-        • If I take 3 days leave, what happens?
-        <br>
-        • How many classes do I need for 90%?
-        <br>
-        • Which subject has the lowest attendance?
-        <br>
-        • What is my overall attendance?
-    `;
+    renderSearchResults(matches);
 
 }
+
+
+
+function detectFloor(text) {
+
+    if (
+        text.includes("ground") ||
+        text.includes("g floor")
+    ) {
+
+        return "Ground";
+
+    }
+
+    if (
+        text.includes("first") ||
+        text.includes("1st")
+    ) {
+
+        return "First";
+
+    }
+
+    if (
+        text.includes("second") ||
+        text.includes("2nd")
+    ) {
+
+        return "Second";
+
+    }
+
+    return null;
+
+}
+
+
+function detectFeature(text) {
+
+    if (
+        text.includes("ac") ||
+        text.includes("air condition")
+    ) {
+
+        return "AC";
+
+    }
+
+    if (
+        text.includes("projector")
+    ) {
+
+        return "Projector";
+
+    }
+
+    if (
+        text.includes("smart board")
+    ) {
+
+        return "Smart Board";
+
+    }
+
+    return null;
+
+}
+
+
+function detectDuration(text) {
+
+    const hourMatch =
+        text.match(
+            /(\d+(?:\.\d+)?)\s*hour/
+        );
+
+    if (hourMatch) {
+
+        return Math.ceil(
+            Number(hourMatch[1]) * 60
+        );
+
+    }
+
+
+    const minuteMatch =
+        text.match(
+            /(\d+)\s*minute/
+        );
+
+    if (minuteMatch) {
+
+        return Number(
+            minuteMatch[1]
+        );
+
+    }
+
+
+    return null;
+
+}
+
 
 
 /* =========================================================
-   23. EMPTY DASHBOARD
-   ========================================================= */
+   SEARCH RESULTS
+========================================================= */
 
-function initializeEmptyDashboard() {
+function renderSearchResults(matches) {
 
-    document.getElementById("overallAttendance")
-        .textContent = "--%";
+    const grid =
+        document.getElementById("resultGrid");
 
-    document.getElementById("heroPercentage")
-        .textContent = "--%";
+    const count =
+        document.getElementById("resultCount");
 
-    document.getElementById("healthPercentage")
-        .textContent = "--%";
 
-    document.getElementById("classesAttended")
-        .textContent = "0";
+    grid.innerHTML = "";
 
-    document.getElementById("classesMissed")
-        .textContent = "0";
+    count.textContent =
+        matches.length
+        + (
+            matches.length === 1
+                ? " room"
+                : " rooms"
+        );
 
-    document.getElementById("overallStatus")
-        .textContent = "Waiting";
 
-    document.getElementById("dashboardSubjects")
-        .innerHTML = `
+    matches.forEach(room => {
 
-            <div class="empty-state small">
+        const status =
+            getRoomStatus(room);
 
-                <div class="empty-icon">📊</div>
+        const card =
+            document.createElement("div");
 
-                <h3>No attendance data yet</h3>
+        card.className =
+            "result-card";
 
-                <p>
-                    Select your section and enter attendance
-                    in the Core Calculator.
-                </p>
+
+        const availableFor =
+            status.nextStart
+                ? "Available until "
+                    + status.nextStart
+                : "Available now";
+
+
+        card.innerHTML = `
+
+            <h3>
+                ${room.id}
+            </h3>
+
+            <p>
+                ${room.floor} Floor •
+                ${room.capacity} seats
+            </p>
+
+            <div class="result-meta">
+
+                ${room.features.map(
+                    feature =>
+                        `<span class="tag">
+                            ${feature}
+                        </span>`
+                ).join("")}
 
             </div>
 
+            <p>
+                ✓ ${availableFor}
+            </p>
+
+            <button
+                class="primary-btn"
+                onclick="openRoom('${room.id}')"
+            >
+                View Room
+            </button>
+
         `;
 
-    renderFullSubjects();
+        grid.appendChild(card);
+
+    });
+
+
+    document.getElementById("searchResults")
+        .scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
 
 }
+
+
+
+/* =========================================================
+   ROOM MODAL
+========================================================= */
+
+let selectedRoom = null;
+
+
+function openRoom(roomId) {
+
+    const room =
+        rooms.find(
+            item => item.id === roomId
+        );
+
+    if (!room) return;
+
+    selectedRoom = room;
+
+
+    const status =
+        getRoomStatus(room);
+
+
+    const modal =
+        document.getElementById("roomModal");
+
+    const content =
+        document.getElementById(
+            "modalRoomContent"
+        );
+
+
+    let countdownText =
+        status.available
+            ? "Available"
+            : "Class in progress";
+
+
+    if (status.available) {
+
+        if (status.nextStart) {
+
+            countdownText =
+                "Free for "
+                + formatMinutes(
+                    status.minutesRemaining
+                );
+
+        } else {
+
+            countdownText =
+                "Free for the rest of the day";
+
+        }
+
+    } else {
+
+        countdownText =
+            "Class ends in "
+            + formatMinutes(
+                status.minutesRemaining
+            );
+
+    }
+
+
+    content.innerHTML = `
+
+        <p class="eyebrow">
+            ${room.floor.toUpperCase()} FLOOR
+        </p>
+
+        <h2 class="modal-room-title">
+            ${room.id}
+        </h2>
+
+        <span class="
+            modal-status
+            ${status.available
+                ? "available"
+                : "busy"}
+        ">
+
+            ${status.available
+                ? "● AVAILABLE"
+                : "● OCCUPIED"}
+
+        </span>
+
+
+        <div
+            id="modalCountdown"
+            class="countdown"
+        >
+            ${countdownText}
+        </div>
+
+
+        <div class="modal-info">
+
+            <div>
+                <strong>Capacity:</strong>
+                ${room.capacity} students
+            </div>
+
+            <div>
+                <strong>Facilities:</strong>
+                ${room.features.join(", ")}
+            </div>
+
+            <div>
+                <strong>Next class:</strong>
+                ${
+                    status.nextStart
+                    || "No more classes today"
+                }
+            </div>
+
+        </div>
+
+
+        ${
+            status.available
+            ?
+            `
+                <button
+                    class="whatsapp-btn"
+                    onclick="callTheSquad()"
+                >
+                    WhatsApp — Call the Squad
+                </button>
+            `
+            :
+            `
+                <button
+                    class="primary-btn"
+                    disabled
+                    style="width:100%;opacity:0.5"
+                >
+                    Room Currently Occupied
+                </button>
+            `
+        }
+
+    `;
+
+
+    modal.classList.add("show");
+
+    startModalTimer();
+
+}
+
+
+function closeRoomModal() {
+
+    document
+        .getElementById("roomModal")
+        .classList.remove("show");
+
+    selectedRoom = null;
+
+}
+
+
+function closeModalOutside(event) {
+
+    if (
+        event.target.id ===
+        "roomModal"
+    ) {
+
+        closeRoomModal();
+
+    }
+
+}
+
+
+
+/* =========================================================
+   COUNTDOWN
+========================================================= */
+
+let modalTimer = null;
+
+
+function startModalTimer() {
+
+    clearInterval(modalTimer);
+
+
+    modalTimer =
+        setInterval(() => {
+
+            if (!selectedRoom) {
+
+                clearInterval(modalTimer);
+
+                return;
+
+            }
+
+
+            const status =
+                getRoomStatus(
+                    selectedRoom
+                );
+
+
+            const element =
+                document.getElementById(
+                    "modalCountdown"
+                );
+
+
+            if (!element) return;
+
+
+            if (status.available) {
+
+                if (status.nextStart) {
+
+                    element.textContent =
+                        "Free for "
+                        + formatMinutes(
+                            status.minutesRemaining
+                        );
+
+                } else {
+
+                    element.textContent =
+                        "Free for the rest of the day";
+
+                }
+
+            } else {
+
+                element.textContent =
+                    "Class ends in "
+                    + formatMinutes(
+                        status.minutesRemaining
+                    );
+
+            }
+
+        }, 1000);
+
+}
+
+
+function formatMinutes(minutes) {
+
+    if (
+        minutes === null ||
+        minutes === undefined
+    ) {
+
+        return "--";
+
+    }
+
+
+    const totalSeconds =
+        Math.max(
+            0,
+            Math.floor(minutes * 60)
+        );
+
+
+    const hours =
+        Math.floor(
+            totalSeconds / 3600
+        );
+
+    const mins =
+        Math.floor(
+            (totalSeconds % 3600)
+            / 60
+        );
+
+    const secs =
+        totalSeconds % 60;
+
+
+    return [
+
+        String(hours).padStart(2, "0"),
+
+        String(mins).padStart(2, "0"),
+
+        String(secs).padStart(2, "0")
+
+    ].join(":");
+
+}
+
+
+
+/* =========================================================
+   CALL THE SQUAD
+========================================================= */
+
+function callTheSquad() {
+
+    if (!selectedRoom) return;
+
+
+    const status =
+        getRoomStatus(selectedRoom);
+
+
+    const message =
+        `📍 Heading to ${selectedRoom.id}. ` +
+        `It's free now on the ${selectedRoom.floor} floor. ` +
+        `${
+            status.nextStart
+                ? "It's free until "
+                    + status.nextStart
+                    + "."
+                : "It's available now."
+        } ` +
+        `Come fast!`;
+
+
+    const whatsappURL =
+        "https://wa.me/?text="
+        + encodeURIComponent(message);
+
+
+    window.open(
+        whatsappURL,
+        "_blank"
+    );
+
+}
+
+
+
+/* =========================================================
+   DASHBOARD STATISTICS
+========================================================= */
+
+function updateDashboardStats() {
+
+    const available =
+        rooms.filter(
+            room =>
+                getRoomStatus(room).available
+        ).length;
+
+
+    const occupied =
+        rooms.length - available;
+
+
+    document.getElementById(
+        "availableCount"
+    ).textContent = available;
+
+
+    document.getElementById(
+        "occupiedCount"
+    ).textContent = occupied;
+
+}
+
+
+
+/* =========================================================
+   ATTENDANCE
+========================================================= */
+
+let attendanceRecords =
+    JSON.parse(
+        localStorage.getItem(
+            "vibecraftAttendance"
+        )
+    ) || [];
+
+
+function markAttendance() {
+
+    const student =
+        document.getElementById(
+            "studentName"
+        ).value.trim();
+
+
+    const subject =
+        document.getElementById(
+            "subjectName"
+        ).value.trim();
+
+
+    const status =
+        document.getElementById(
+            "attendanceStatus"
+        ).value;
+
+
+    if (!student || !subject) {
+
+        showToast(
+            "Please enter student name and subject."
+        );
+
+        return;
+
+    }
+
+
+    const record = {
+
+        student,
+
+        subject,
+
+        status,
+
+        date:
+            new Date()
+                .toLocaleDateString()
+
+    };
+
+
+    attendanceRecords.push(record);
+
+
+    localStorage.setItem(
+        "vibecraftAttendance",
+        JSON.stringify(
+            attendanceRecords
+        )
+    );
+
+
+    document.getElementById(
+        "studentName"
+    ).value = "";
+
+
+    document.getElementById(
+        "subjectName"
+    ).value = "";
+
+
+    renderAttendance();
+
+    showToast(
+        "Attendance saved successfully."
+    );
+
+}
+
+
+function renderAttendance() {
+
+    const table =
+        document.getElementById(
+            "attendanceTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    attendanceRecords
+        .slice()
+        .reverse()
+        .forEach(record => {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${escapeHTML(
+                        record.student
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        record.subject
+                    )}
+                </td>
+
+                <td>
+                    ${record.status}
+                </td>
+
+                <td>
+                    ${record.date}
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        });
+
+
+    const present =
+        attendanceRecords.filter(
+            r => r.status === "Present"
+        ).length;
+
+
+    const absent =
+        attendanceRecords.filter(
+            r => r.status === "Absent"
+        ).length;
+
+
+    const total =
+        present + absent;
+
+
+    const percentage =
+        total
+            ? Math.round(
+                (present / total) * 100
+            )
+            : 0;
+
+
+    document.getElementById(
+        "presentCount"
+    ).textContent = present;
+
+
+    document.getElementById(
+        "absentCount"
+    ).textContent = absent;
+
+
+    document.getElementById(
+        "attendancePercentage"
+    ).textContent =
+        percentage + "%";
+
+}
+
+
+
+/* =========================================================
+   SECURITY HELPER
+========================================================= */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add("show");
+
+
+    clearTimeout(toastTimer);
+
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        }, 3000);
+
+}
+
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        renderRooms();
+
+        renderAttendance();
+
+        updateDashboardStats();
+
+
+        /*
+           Refresh room availability every 30 seconds.
+        */
+
+        setInterval(() => {
+
+            renderRooms();
+
+            updateDashboardStats();
+
+        }, 30000);
+
+    }
+);

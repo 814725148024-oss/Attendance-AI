@@ -4,628 +4,568 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Attendance AI | VibeCraft</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>VibeCraft | Smart Room & Attendance</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="app">
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-
-        <div class="brand">
-            <div class="brand-icon">AI</div>
-            <div>
-                <h2>Attendance AI</h2>
-                <span>VibeCraft</span>
-            </div>
-        </div>
-
-        <nav>
-            <button class="nav-item active" onclick="showSection('dashboard', this)">
-                <span>▦</span> Dashboard
-            </button>
-
-            <button class="nav-item" onclick="showSection('calculator', this)">
-                <span>🧮</span> Core Calculator
-            </button>
-
-            <button class="nav-item" onclick="showSection('subjects', this)">
-                <span>📚</span> Subjects
-            </button>
-
-            <button class="nav-item" onclick="showSection('simulator', this)">
-                <span>📝</span> Leave Simulator
-            </button>
-
-            <button class="nav-item" onclick="showSection('timetable', this)">
-                <span>🗓</span> Timetable
-            </button>
-        </nav>
-
-        <div class="sidebar-bottom">
-            <div class="mini-status">
-                <div class="status-dot"></div>
-                <div>
-                    <strong>System Online</strong>
-                    <small>Attendance engine ready</small>
-                </div>
-            </div>
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN -->
-    <main class="main">
-
-        <!-- TOPBAR -->
-        <header class="topbar">
-
-            <div>
-                <p class="eyebrow">STUDENT ATTENDANCE MANAGEMENT</p>
-                <h1 id="pageTitle">Attendance Dashboard</h1>
-            </div>
-
-            <div class="today-box">
-                <span>Today</span>
-                <strong id="todayDate">Loading...</strong>
-            </div>
-
-        </header>
-
-
-        <!-- DASHBOARD -->
-        <section id="dashboard" class="page-section active">
-
-            <div class="hero-card">
-
-                <div>
-                    <span class="badge">SMART ATTENDANCE SYSTEM</span>
-
-                    <h2>
-                        Know your attendance.
-                        <span>Before it becomes a problem.</span>
-                    </h2>
-
-                    <p>
-                        Track attendance health, calculate recovery requirements,
-                        simulate leaves and ask the Attendance Advisor for personalized guidance.
-                    </p>
-
-                    <button class="primary-btn" onclick="showSectionById('calculator')">
-                        Open Attendance Calculator →
-                    </button>
-                </div>
-
-                <div class="hero-circle">
-                    <div class="circle-inner">
-                        <strong id="heroPercentage">--%</strong>
-                        <span>Overall</span>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <!-- STAT CARDS -->
-            <div class="stats-grid">
-
-                <div class="stat-card">
-                    <div class="stat-icon blue">%</div>
-                    <div>
-                        <span>Overall Attendance</span>
-                        <strong id="overallAttendance">--%</strong>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon green">✓</div>
-                    <div>
-                        <span>Classes Attended</span>
-                        <strong id="classesAttended">0</strong>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon orange">×</div>
-                    <div>
-                        <span>Classes Missed</span>
-                        <strong id="classesMissed">0</strong>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon red">!</div>
-                    <div>
-                        <span>Status</span>
-                        <strong id="overallStatus">Waiting</strong>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <!-- CHARTS -->
-            <div class="two-column">
-
-                <div class="panel">
-
-                    <div class="panel-header">
-                        <div>
-                            <h3>Attendance by Subject</h3>
-                            <p>Current attendance health</p>
-                        </div>
-                    </div>
-
-                    <div class="chart-container">
-                        <canvas id="attendanceChart"></canvas>
-                    </div>
-
-                </div>
-
-
-                <div class="panel">
-
-                    <div class="panel-header">
-                        <div>
-                            <h3>Attendance Health</h3>
-                            <p>Overall student status</p>
-                        </div>
-                    </div>
-
-                    <div class="health-display">
-
-                        <div class="health-ring" id="healthRing">
-                            <div>
-                                <strong id="healthPercentage">--%</strong>
-                                <span>Attendance</span>
-                            </div>
-                        </div>
-
-                        <div class="health-info">
-
-                            <div class="legend">
-                                <span class="legend-dot safe"></span>
-                                <div>
-                                    <strong>75%+</strong>
-                                    <small>Safe zone</small>
-                                </div>
-                            </div>
-
-                            <div class="legend">
-                                <span class="legend-dot warning"></span>
-                                <div>
-                                    <strong>65–74%</strong>
-                                    <small>Warning zone</small>
-                                </div>
-                            </div>
-
-                            <div class="legend">
-                                <span class="legend-dot danger"></span>
-                                <div>
-                                    <strong>Below 65%</strong>
-                                    <small>Danger zone</small>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- SUBJECT OVERVIEW -->
-            <div class="panel">
-
-                <div class="panel-header">
-                    <div>
-                        <h3>Subject Overview</h3>
-                        <p>Your current attendance status</p>
-                    </div>
-
-                    <button class="text-btn" onclick="showSectionById('subjects')">
-                        View all →
-                    </button>
-                </div>
-
-                <div id="dashboardSubjects" class="subject-list"></div>
-
-            </div>
-
-        </section>
-
-
-        <!-- CORE CALCULATOR -->
-        <section id="calculator" class="page-section">
-
-            <div class="section-heading">
-                <div>
-                    <span class="badge">CORE CALCULATOR</span>
-                    <h2>Plan your attendance</h2>
-                    <p>Use your section timetable to calculate remaining classes and recovery requirements.</p>
-                </div>
-            </div>
-
-
-            <div class="calculator-grid">
-
-                <div class="panel">
-
-                    <div class="panel-header">
-                        <div>
-                            <h3>Student Planning</h3>
-                            <p>Enter your current information</p>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-
-                        <div class="form-group">
-                            <label>Class Section</label>
-
-                            <select id="sectionSelect" onchange="loadSection()">
-                                <option value="">Select your section</option>
-                                <option value="I-ECE-A">I ECE-A</option>
-                                <option value="II-BME">II BME</option>
-                                <option value="II-ECE-DS-A">II ECE-DS A</option>
-                                <option value="II-ECE-DS-B">II ECE-DS B</option>
-                                <option value="III-BME">III BME</option>
-                                <option value="III-ECE-A">III ECE-A</option>
-                                <option value="III-ECE-B">III ECE-B</option>
-                                <option value="III-ECE-DS">III ECE-DS</option>
-                                <option value="IV-ECE-A">IV ECE-A</option>
-                                <option value="IV-ECE-B">IV ECE-B</option>
-                            </select>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label>Today's Date</label>
-                            <input type="date" id="currentDate" readonly>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label>Planning / Future Date</label>
-                            <input type="date" id="planningDate">
-                        </div>
-
-
-                        <div class="form-group">
-                            <label>Semester End</label>
-                            <input type="date" id="semesterEnd" value="2026-11-30">
-                        </div>
-
-                    </div>
-
-
-                    <div class="calculator-note">
-                        <strong>How it works</strong>
-                        <p>
-                            Select your section and planning date. The system reads the
-                            weekly timetable, counts scheduled classes and calculates
-                            the attendance needed to stay at or above 75% and reach 90%.
-                        </p>
-                    </div>
-
-                    <button class="primary-btn full-btn" onclick="runCoreCalculation()">
-                        Calculate Attendance Plan
-                    </button>
-
-                </div>
-
-
-                <div class="panel">
-
-                    <div class="panel-header">
-                        <div>
-                            <h3>Attendance Targets</h3>
-                            <p>Calculated from your current attendance</p>
-                        </div>
-                    </div>
-
-                    <div id="calculatorResults" class="empty-state">
-                        <div class="empty-icon">🧮</div>
-                        <h3>No calculation yet</h3>
-                        <p>Select your section and click Calculate.</p>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div id="detentionAlert" class="detention-alert hidden">
-
-                <div class="alert-icon">⚠</div>
-
-                <div>
-                    <span class="alert-label">CRITICAL WARNING</span>
-                    <h2>IRREVERSIBLE DETENTION</h2>
-
-                    <p id="detentionText">
-                        Recovery to 75% is mathematically impossible before the cutoff.
-                    </p>
-                </div>
-
-            </div>
-
-
-            <!-- SUBJECT INPUTS -->
-            <div class="panel">
-
-                <div class="panel-header">
-                    <div>
-                        <h3>Current Subject Attendance</h3>
-                        <p>Enter attended and conducted classes for accurate calculations.</p>
-                    </div>
-
-                    <button class="secondary-btn" onclick="loadDemoData()">
-                        Load Demo Data
-                    </button>
-                </div>
-
-                <div id="calculatorSubjects" class="attendance-input-list">
-
-                    <div class="empty-state small">
-                        <p>Select a class section first.</p>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- SUBJECTS -->
-        <section id="subjects" class="page-section">
-
-            <div class="section-heading">
-                <div>
-                    <span class="badge">SUBJECTS</span>
-                    <h2>Subject Attendance</h2>
-                    <p>Detailed attendance information for each subject.</p>
-                </div>
-            </div>
-
-            <div id="fullSubjectList" class="subject-cards"></div>
-
-        </section>
-
-
-        <!-- LEAVE SIMULATOR -->
-        <section id="simulator" class="page-section">
-
-            <div class="section-heading">
-                <div>
-                    <span class="badge">LEAVE SIMULATOR</span>
-                    <h2>OD & Medical Leave Simulator</h2>
-                    <p>See how future leave affects your attendance instantly.</p>
-                </div>
-            </div>
-
-
-            <div class="calculator-grid">
-
-                <div class="panel">
-
-                    <div class="panel-header">
-                        <div>
-                            <h3>Simulate Leave</h3>
-                            <p>Choose a subject and number of days.</p>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label>Subject</label>
-
-                        <select id="simSubject"></select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label>Leave Type</label>
-
-                        <select id="leaveType">
-                            <option value="od">On-Duty (OD)</option>
-                            <option value="medical">Medical Leave</option>
-                            <option value="normal">Normal Leave / Absence</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label>Number of Classes</label>
-
-                        <input
-                            type="number"
-                            id="leaveDays"
-                            min="1"
-                            value="1"
-                            oninput="simulateLeave()"
-                        >
-                    </div>
-
-
-                    <button class="primary-btn full-btn" onclick="simulateLeave()">
-                        Simulate Attendance
-                    </button>
-
-                </div>
-
-
-                <div class="panel">
-
-                    <div class="panel-header">
-                        <div>
-                            <h3>Projected Result</h3>
-                            <p>Instant attendance calculation</p>
-                        </div>
-                    </div>
-
-                    <div id="simulationResult" class="simulation-result">
-
-                        <div class="simulation-percentage">
-                            <span>Projected Attendance</span>
-                            <strong id="projectedPercentage">--%</strong>
-                        </div>
-
-                        <div id="simulationStatus" class="result-message">
-                            Select a subject and simulate a leave.
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- TIMETABLE -->
-        <section id="timetable" class="page-section">
-
-            <div class="section-heading">
-                <div>
-                    <span class="badge">TIMETABLE</span>
-                    <h2>Section Timetable</h2>
-                    <p>View the weekly timetable used by the attendance calculator.</p>
-                </div>
-            </div>
-
-
-            <div class="panel">
-
-                <div class="form-group timetable-selector">
-
-                    <label>Section</label>
-
-                    <select id="timetableSelect" onchange="renderTimetable()">
-                        <option value="">Select section</option>
-                        <option value="I-ECE-A">I ECE-A</option>
-                        <option value="II-BME">II BME</option>
-                        <option value="II-ECE-DS-A">II ECE-DS A</option>
-                        <option value="II-ECE-DS-B">II ECE-DS B</option>
-                        <option value="III-BME">III BME</option>
-                        <option value="III-ECE-A">III ECE-A</option>
-                        <option value="III-ECE-B">III ECE-B</option>
-                        <option value="III-ECE-DS">III ECE-DS</option>
-                        <option value="IV-ECE-A">IV ECE-A</option>
-                        <option value="IV-ECE-B">IV ECE-B</option>
-                    </select>
-
-                </div>
-
-
-                <div id="timetableContainer" class="table-wrapper">
-
-                    <div class="empty-state">
-                        <div class="empty-icon">🗓</div>
-                        <h3>Select a section</h3>
-                        <p>The timetable will appear here.</p>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- FLOATING AI BUTTON -->
-    <button class="ai-floating-btn" onclick="toggleChat()" title="Attendance Advisor">
-        <span>✦</span>
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="brand">
+        <span class="brand-box"></span>
+        <span>VIBECRAFT</span>
+    </div>
+
+    <nav>
+        <button onclick="showSection('dashboard')">Dashboard</button>
+        <button onclick="showSection('rooms')">Smart Rooms</button>
+        <button onclick="showSection('attendance')">Attendance</button>
+    </nav>
+
+    <button class="attendance-btn" onclick="showSection('attendance')">
+        Mark Attendance
     </button>
 
-
-    <!-- CHAT -->
-    <div id="chatWindow" class="chat-window">
-
-        <div class="chat-header">
-
-            <div class="chat-profile">
-                <div class="bot-avatar">AI</div>
-
-                <div>
-                    <strong>Attendance Advisor</strong>
-                    <span>Personal attendance assistant</span>
-                </div>
-            </div>
-
-            <button onclick="toggleChat()">×</button>
-
-        </div>
+</header>
 
 
-        <div id="chatMessages" class="chat-messages">
+<!-- ================= MAIN ================= -->
 
-            <div class="message bot">
-                Hi! I'm your Attendance Advisor 👋
-                <br><br>
-                Ask me things like:
-                <br>
-                • What is my Chemistry attendance?
-                <br>
-                • If I take 3 days leave, what happens?
-                <br>
-                • How many classes can I miss?
-                <br>
-                • How many classes do I need for 90%?
-            </div>
-
-        </div>
+<main>
 
 
-        <div class="chat-suggestions">
+<!-- ================= DASHBOARD ================= -->
 
-            <button onclick="useSuggestion('What is my lowest attendance subject?')">
-                Lowest attendance
-            </button>
+<section id="dashboard" class="section active">
 
-            <button onclick="useSuggestion('How many classes do I need to attend to reach 90%?')">
-                Reach 90%
+    <div class="hero">
+
+        <div class="hero-text">
+
+            <p class="eyebrow">SMART CAMPUS EXPERIENCE</p>
+
+            <h1>
+                Find the right room.<br>
+                <span>At the right time.</span>
+            </h1>
+
+            <p class="hero-description">
+                Search available classrooms using natural language,
+                explore the floor map, check live availability and
+                invite your friends instantly.
+            </p>
+
+            <button class="primary-btn"
+                    onclick="showSection('rooms')">
+                Find a Room →
             </button>
 
         </div>
 
+        <div class="hero-card">
 
-        <div class="chat-input">
+            <div class="mini-header">
+                <span>LIVE CAMPUS</span>
+                <span class="live-dot">● LIVE</span>
+            </div>
 
-            <input
-                type="text"
-                id="chatInput"
-                placeholder="Ask about your attendance..."
-                onkeydown="handleChatKey(event)"
-            >
+            <div class="campus-stat">
+                <strong id="availableCount">0</strong>
+                <span>Rooms Available</span>
+            </div>
 
-            <button onclick="sendChat()">➤</button>
+            <div class="campus-stat">
+                <strong id="occupiedCount">0</strong>
+                <span>Rooms Occupied</span>
+            </div>
+
+            <div class="campus-stat">
+                <strong>10</strong>
+                <span>Timetables</span>
+            </div>
 
         </div>
 
     </div>
 
 
-    <script src="script.js"></script>
+    <div class="feature-grid">
+
+        <div class="feature-card">
+            <div class="feature-icon">⌕</div>
+            <h3>AI Room Finder</h3>
+            <p>
+                Type requests like
+                "I need an AC room on ground floor for 2 hours."
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">▦</div>
+            <h3>Floor Map</h3>
+            <p>
+                View classrooms visually and identify
+                available rooms instantly.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">◷</div>
+            <h3>Live Countdown</h3>
+            <p>
+                Know exactly how long a room remains
+                available before the next class.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">↗</div>
+            <h3>Call the Squad</h3>
+            <p>
+                Share your selected room with friends
+                through WhatsApp.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= SMART ROOMS ================= -->
+
+<section id="rooms" class="section">
+
+    <div class="section-heading">
+
+        <div>
+            <p class="eyebrow">PHASE 2</p>
+
+            <h2>
+                The Smart Room Finder
+            </h2>
+
+            <p>
+                Find rooms using filters or natural-language search.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-panel">
+
+        <div class="search-title">
+            <span class="search-symbol">⌕</span>
+
+            <div>
+                <h3>AI Room Finder</h3>
+                <p>
+                    Describe what you need in your own words.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="search-row">
+
+            <input
+                type="text"
+                id="roomSearch"
+                placeholder="Example: I need an AC room on ground floor for 2 hours"
+                onkeydown="handleSearchKey(event)"
+            >
+
+            <button
+                class="primary-btn"
+                onclick="smartSearch()"
+            >
+                Find Rooms
+            </button>
+
+        </div>
+
+
+        <div class="quick-searches">
+
+            <button onclick="quickSearch('AC ground floor')">
+                AC + Ground Floor
+            </button>
+
+            <button onclick="quickSearch('large room')">
+                Large Room
+            </button>
+
+            <button onclick="quickSearch('projector')">
+                Projector
+            </button>
+
+            <button onclick="quickSearch('2 hours')">
+                2 Hours
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- FILTERS -->
+
+    <div class="filters">
+
+        <select id="floorFilter" onchange="renderRooms()">
+
+            <option value="all">
+                All Floors
+            </option>
+
+            <option value="Ground">
+                Ground Floor
+            </option>
+
+            <option value="First">
+                First Floor
+            </option>
+
+            <option value="Second">
+                Second Floor
+            </option>
+
+        </select>
+
+
+        <select id="capacityFilter" onchange="renderRooms()">
+
+            <option value="all">
+                Any Capacity
+            </option>
+
+            <option value="30">
+                30+ Students
+            </option>
+
+            <option value="50">
+                50+ Students
+            </option>
+
+            <option value="80">
+                80+ Students
+            </option>
+
+        </select>
+
+
+        <select id="featureFilter" onchange="renderRooms()">
+
+            <option value="all">
+                Any Facility
+            </option>
+
+            <option value="AC">
+                AC
+            </option>
+
+            <option value="Projector">
+                Projector
+            </option>
+
+            <option value="Smart Board">
+                Smart Board
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- MAP -->
+
+    <div class="map-section">
+
+        <div class="map-header">
+
+            <div>
+                <p class="eyebrow">VISUAL MAP</p>
+                <h2>Campus Room Map</h2>
+            </div>
+
+            <div class="legend">
+
+                <span>
+                    <i class="available-dot"></i>
+                    Available
+                </span>
+
+                <span>
+                    <i class="busy-dot"></i>
+                    Occupied
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="building">
+
+            <div class="building-top">
+                VIBECRAFT ACADEMIC BLOCK
+            </div>
+
+
+            <div class="floor">
+
+                <div class="floor-label">
+                    GROUND FLOOR
+                </div>
+
+                <div
+                    id="groundRooms"
+                    class="room-grid"
+                ></div>
+
+            </div>
+
+
+            <div class="floor">
+
+                <div class="floor-label">
+                    FIRST FLOOR
+                </div>
+
+                <div
+                    id="firstRooms"
+                    class="room-grid"
+                ></div>
+
+            </div>
+
+
+            <div class="floor">
+
+                <div class="floor-label">
+                    SECOND FLOOR
+                </div>
+
+                <div
+                    id="secondRooms"
+                    class="room-grid"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH RESULTS -->
+
+    <div id="searchResults" class="search-results">
+
+        <div class="results-header">
+
+            <h2>
+                Matching Rooms
+            </h2>
+
+            <span id="resultCount">
+                0 rooms
+            </span>
+
+        </div>
+
+        <div id="resultGrid" class="result-grid"></div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= ATTENDANCE ================= -->
+
+<section id="attendance" class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <p class="eyebrow">
+                ATTENDANCE
+            </p>
+
+            <h2>
+                Smart Attendance Dashboard
+            </h2>
+
+            <p>
+                Quickly record and monitor your attendance.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="attendance-layout">
+
+        <div class="attendance-card">
+
+            <h3>
+                Mark Today's Attendance
+            </h3>
+
+            <div class="attendance-form">
+
+                <input
+                    id="studentName"
+                    type="text"
+                    placeholder="Student Name"
+                >
+
+                <input
+                    id="subjectName"
+                    type="text"
+                    placeholder="Subject"
+                >
+
+                <select id="attendanceStatus">
+
+                    <option value="Present">
+                        Present
+                    </option>
+
+                    <option value="Absent">
+                        Absent
+                    </option>
+
+                </select>
+
+                <button
+                    class="primary-btn"
+                    onclick="markAttendance()"
+                >
+                    Save Attendance
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="attendance-stats">
+
+            <div>
+                <strong id="presentCount">
+                    0
+                </strong>
+
+                <span>
+                    Present
+                </span>
+            </div>
+
+            <div>
+                <strong id="absentCount">
+                    0
+                </strong>
+
+                <span>
+                    Absent
+                </span>
+            </div>
+
+            <div>
+                <strong id="attendancePercentage">
+                    0%
+                </strong>
+
+                <span>
+                    Attendance
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="attendance-table-container">
+
+        <h3>
+            Attendance Records
+        </h3>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Student</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="attendanceTable"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+</main>
+
+
+
+<!-- ================= ROOM MODAL ================= -->
+
+<div
+    id="roomModal"
+    class="modal"
+    onclick="closeModalOutside(event)"
+>
+
+    <div class="modal-content">
+
+        <button
+            class="close-btn"
+            onclick="closeRoomModal()"
+        >
+            ×
+        </button>
+
+
+        <div id="modalRoomContent"></div>
+
+    </div>
 
 </div>
+
+
+
+<!-- ================= TOAST ================= -->
+
+<div
+    id="toast"
+    class="toast"
+>
+    Message
+</div>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
